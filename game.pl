@@ -1,31 +1,7 @@
-display_game(GameState, Player) :- printBoard(GameState).
+getCell(X, Y, GameState, Value) :- getRow(Y, GameState, Row), getCell(X, Row, Value), write(Value).
 
-%INITIAL BOARD
-initial([[#, #, #, #, #, #, #, #, #, #],
-         [#, o, o, o, o, o, o, o, o, #],
-         [#, o, o, o, o, o, o, o, o, #],
-         [#, o, o, o, o, o, o, o, o, #],
-         [#, o, o, o, 'W', 'B', o, o, o, #],
-         [#, o, o, o, 'B', 'W', o, o, o, #],
-         [#, o, o, o, o, o, o, o, o, #],
-         [#, o, o, o, o, o, o, o, o, #],
-         [#, o, o, o, o, o, o, o, o, #],
-         [#, #, #, #, #, #, #, #, #, #]]).
+getRow(0, [H|T], H).
+getRow(Y, [H|T], Row) :- Y1 is Y-1, getRow(Y1, T, Row).
 
-%prints board, row by row
-
-printBoard([H|T]) :- write(' -----------------------------------------'),
-                     nl,
-                     printRow(H),
-                     nl,
-                     printBoard(T).
-
-printBoard([]) :-    write(' -----------------------------------------'), nl.
-
-%prints row, cell by cell
-
-printRow(['o'|T]) :- write(' | '), write(' '), printRow(T). %special case, doesnt print anything in an empty cell
-printRow([H|T]) :- write(' | '), write(H), printRow(T). 
-printRow([]) :- write(' |').
-
-%reconsult('game.pl').
+getCell(0, [H|T], H).
+getCell(X, [H|T], Value) :- X1 is X-1, getCell(X1, T, Value).
