@@ -7,7 +7,7 @@ play :- printMainMenu,
 
 %parse input for game mode
 
-manageInput(1) :-  initial(GameState), display_game(GameState, 'P1').
+manageInput(1) :-  startGame.
 manageInput(2) :-  write('Mode not implemented yet!').
 manageInput(3) :-  write('Mode not implemented yet!').
 manageInput(Else) :- write('Invalid mode!').
@@ -42,5 +42,3 @@ printMainMenu :-
     write('|                                                                       |'),nl,
     write('|_______________________________________________________________________|'),nl,
     nl,nl.
-
-p :- initial(GameState), display_game(GameState, 'P1').
