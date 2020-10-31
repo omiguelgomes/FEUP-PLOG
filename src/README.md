@@ -35,15 +35,25 @@ At the end the player with the most points wins.
 ## Representation of the gamestate
 
 initialBoard([['#',   '#',   '#',   'J',   '#',   '#',   'J',   '#',   '#', '#'], 
+
          ['#', '#', ' ', 'P', ' ', 'P', ' ', ' ', '#', '#'], 
+         
          ['#', ' ', ' ', ' ', ' ', ' ', '#', ' ', 'P', 'J'], 
+         
          ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'], 
-         ['#', 'P', '#', ' ', 'W', 'B', ' ', ' ', ' ', '#'], 
+         
+         ['#', 'P', '#', ' ', 'W', 'B', ' ', ' ', ' ', '#'],
+         
          ['J', ' ', ' ', ' ', 'B', 'W', ' ', ' ', ' ', '#'], 
+         
          ['#', 'P', ' ', ' ', ' ', ' ', ' ', '#', 'P', 'J'], 
+         
          ['#', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', '#'], 
+         
          ['#', '#', ' ', 'P', ' ', ' ', ' ', 'P', '#', '#'], 
+         
          ['#',   '#',   '#',   'J',   'J',   '#',   '#',   'J',   '#', '#']]).
+         
          
          
 midBoard([['#',   '#',   '#',   'J',   '#',   '#',   'J',   '#',   '#', '#'], 
@@ -73,7 +83,7 @@ endBoard([['#',   '#',   '#',   'J',   '#',   '#',   'J',   '#',   '#', '#'],
 
 ## Gamestate display
 
-![Code to print board](https://raw.githubusercontent.com/omiguelgomes/FEUP-PLOG/master/TI/midboardcode.png)
+![Code to print board](https://raw.githubusercontent.com/omiguelgomes/FEUP-PLOG/master/TI/printingtheboard.PNG)
 
 
 
