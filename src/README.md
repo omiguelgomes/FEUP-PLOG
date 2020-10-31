@@ -15,11 +15,11 @@ Mapello is a board game based on Reversi designed by Simon M. Lucas. The objecti
 https://nestorgames.com/#mapello_detail
 
 ## The pieces
- - White piece
- - Black piece
- - Walls: They act like normal walls (same as the outer part of the board)
- - Bonuses: They count as extra points when captured (+3 for each)
- - Jokers: They act as normal pieces of the player in turn
+ - White piece ('W')
+ - Black piece ('B')
+ - Walls: They act like normal walls (same as the outer part of the board) ('#')
+ - Bonuses: They count as extra points when captured (+3 for each) ('P')
+ - Jokers: They act as normal pieces of the player in turn ('J')
 
 
 ## Setup
