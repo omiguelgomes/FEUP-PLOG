@@ -73,6 +73,8 @@ endBoard([['#',   '#',   '#',   'J',   '#',   '#',   'J',   '#',   '#', '#'],
 
 ## Gamestate display
 
+![Code to print board](https://raw.githubusercontent.com/omiguelgomes/FEUP-PLOG/master/TI/midboardcode.png)
+
 
 
 
