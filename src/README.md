@@ -35,6 +35,7 @@ At the end the player with the most points wins.
 ## Representation of the gamestate
 
 initialBoard(
+
 [['#',   '#',   '#',   'J',   '#',   '#',   'J',   '#',   '#', '#'], 
 
          ['#', '#', ' ', 'P', ' ', 'P', ' ', ' ', '#', '#'], 
@@ -59,6 +60,7 @@ initialBoard(
          
          
 midBoard(
+
 [['#',   '#',   '#',   'J',   '#',   '#',   'J',   '#',   '#', '#'], 
 
          ['#', '#', ' ', 'P', ' ', 'P', ' ', ' ', '#', '#'], 
@@ -82,6 +84,7 @@ midBoard(
          
       
 endBoard(
+
 [['#',   '#',   '#',   'J',   '#',   '#',   'J',   '#',   '#', '#'], 
 
          ['#', '#', 'W', 'P', 'W', 'P', 'B', 'W', '#', '#'], 
