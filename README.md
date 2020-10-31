@@ -42,7 +42,7 @@ The board is stored using lists of lists as per normal prolog procedure. Below y
 
 ## Gamestate display
 
-The board is shown printing the list (the board) row by row (a utility function was added for that purpose.
+The board is shown printing the list (the board) row by row (a utility function was added for that purpose).
 
 ![Code to print board](https://raw.githubusercontent.com/omiguelgomes/FEUP-PLOG/master/TI/printingtheboard.PNG)
 
