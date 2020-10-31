@@ -12,7 +12,7 @@ Pedro Miguel Afonso Teixeira  up201505916
 ## The game
 Mapello is a board game based on Reversi designed by Simon M. Lucas. The objective is to have the highest ammount of pieces of the same colour (the one player chose) when there's no longer any valid move available. 
 
-https://nestorgames.com/#mapello_detail
+Full set of rules on https://nestorgames.com/#mapello_detail
 
 ## The pieces
  - White piece ('W')
