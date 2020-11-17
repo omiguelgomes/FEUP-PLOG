@@ -13,7 +13,7 @@ gameLoop(GameState, Player) :- \+gameOver(GameState, Player),
 %Receive input from player, and check if the move is legal.
 getMove(Player, [X, Y]) :- write(Player), write(' to play.'), nl,
                             write('Where would you like to play?'), nl,
-                            write('X: '), nl,
+                            write('X: '),
                             read(X),
                             write('Y: '),
                             read(Y),

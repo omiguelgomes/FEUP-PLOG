@@ -1,4 +1,4 @@
-display_game(GameState, Player) :- printBoard(GameState).
+display_game(GameState, Player) :- printCoordsBar, printBoard(GameState, 0).
 
 %INITIAL BOARD
 initial([['#',   '#',   '#',   'J',   '#',   '#',   'J',   '#',   '#', '#'], 
@@ -14,20 +14,24 @@ initial([['#',   '#',   '#',   'J',   '#',   '#',   'J',   '#',   '#', '#'],
 
 
 
+printCoordsBar :- nl, write('      A   B   C   D   E   F   G   H   I   J  '), nl,
+                  write('    -----------------------------------------'), nl.
+
 %prints board, row by row
 
-printBoard([H|T]) :- write(' -----------------------------------------'),
-                     nl,
-                     printRow(H),
-                     nl,
-                     printBoard(T).
+printBoard([H|T], RowNr) :- write('  '), write(RowNr), write(' '),
+                            NextRowNr is RowNr + 1,
+                            printRow(H),
+                            nl,
+                            write('    -----------------------------------------'), nl,
+                            printBoard(T, NextRowNr).
 
-printBoard([]) :-    write(' -----------------------------------------'), nl.
+printBoard([], _).
 
 %prints row, cell by cell
 
-printRow([H|T]) :- write(' | '), write(H), printRow(T). 
-printRow([]) :- write(' |').
+printRow([H|T]) :- write('| '), write(H), write(' '), printRow(T). 
+printRow([]) :- write('|').
 
 %MID BOARD
 mid([['#',   '#',   '#',   'J',   '#',   '#',   'J',   '#',   '#', '#'], 
