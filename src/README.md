@@ -34,15 +34,11 @@ At the end the player with the most points wins.
 
 ## Representation of the gamestate
 
-The board is stored using lists of lists as per normal prolog procedure. Below you can see an example of how the board is shown during different phases of the game.
-
 ![All boardsd](https://github.com/omiguelgomes/FEUP-PLOG/blob/master/TI/allboardsinone.png?raw=true)
          
          
 
 ## Gamestate display
-
-The board is shown printing the list (the board) row by row (a utility function was added for that purpose).
 
 ![Code to print board](https://raw.githubusercontent.com/omiguelgomes/FEUP-PLOG/master/TI/printingtheboard.PNG)
 
