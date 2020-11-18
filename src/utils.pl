@@ -6,8 +6,31 @@ getRow(Y, [H|T], Row) :- Y1 is Y-1, getRow(Y1, T, Row).
 getCellInRow(0, [H|T], H).
 getCellInRow(X, [H|T], Value) :- X1 is X-1, getCellInRow(X1, T, Value).
 
-changePlayer('B', 'W').
-changePlayer('W', 'B').
+getOpponent('B', 'W').
+getOpponent('W', 'B').
 
 /*Finds the diagonal '/' that goes through X, Y, places it in L*/
 getMainDiagonal(GameState, X, Y, L) :- 1==1.
+
+/*Converts x position from letter to number*/
+convertX('a', 0).
+convertX('b', 1).
+convertX('c', 2).
+convertX('d', 3).
+convertX('e', 4).
+convertX('f', 5).
+convertX('g', 6).
+convertX('h', 7).
+convertX('i', 8).
+convertX('j', 9).
+
+convertX('A', 0).
+convertX('B', 1).
+convertX('C', 2).
+convertX('D', 3).
+convertX('E', 4).
+convertX('F', 5).
+convertX('G', 6).
+convertX('H', 7).
+convertX('I', 8).
+convertX('J', 9).

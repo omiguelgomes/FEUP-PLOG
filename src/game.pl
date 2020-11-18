@@ -22,10 +22,9 @@ move(GameState, Player, [X, Y]) :- nl, write(Player), write(' has no possible mo
 /*Receive input from player, and check if the move is legal.*/
 getMove(GameState, Player, [X, Y]) :- write(Player), write(' to play.'), nl,
                             write('Where would you like to play?'), nl,
-                            write('X: '),
-                            read(X),
-                            write('Y: '),
-                            read(Y),
+                            write('X: '), read(TempX),
+                            write('Y: '), read(Y),
+                            convertX(TempX, X),
                             validateMove(GameState, Player, X, Y).
 
 getMove(GameState, Player, [X, Y]) :- write('Invalid position, choose another one.'), nl, getMove(GameState, Player, [X, Y]).
@@ -56,11 +55,11 @@ canMove([H|T], Player).
 
 /*Checks if there is an opponent's piece adjacent to X, Y (must be true to play)*/
 hasOpponentPieceAdjacent(GameState, Player, X, Y) :- getOpponent(Player, Opponent), (
-                                                     getCell(X-1, Y-1, GameState, Opponent) ;
-                                                     getCell(X-1, Y, GameState, Opponent)   ;
-                                                     getCell(X-1, Y+1, GameState, Opponent) ;
-                                                     getCell(X, Y-1, GameState, Opponent)   ;
-                                                     getCell(X, Y+1, GameState, Opponent)   ;
-                                                     getCell(X+1, Y-1, GameState, Opponent) ;
-                                                     getCell(X+1, Y, GameState, Opponent)   ;
-                                                     getCell(X+1, Y+1, GameState, Opponent) ).
+                                                     getCell(X-1, Y-1, GameState, Opponent);
+                                                     getCell(X-1, Y,   GameState, Opponent);
+                                                     getCell(X-1, Y+1, GameState, Opponent);
+                                                     getCell(X, Y-1,   GameState, Opponent);
+                                                     getCell(X, Y+1,   GameState, Opponent);
+                                                     getCell(X+1, Y-1, GameState, Opponent);
+                                                     getCell(X+1, Y,   GameState, Opponent);
+                                                     getCell(X+1, Y+1, GameState, Opponent)).
