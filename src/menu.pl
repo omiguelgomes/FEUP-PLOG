@@ -1,11 +1,11 @@
-%initial function, shows menu, and asks for user input for the game mode
+/*initial function, shows menu, and asks for user input for the game mode*/
 
 play :- printMainMenu, 
        write('What mode would you like to play?'),
        read(Input),
        manageInput(Input).
 
-%parse input for game mode
+/*parse input for game mode*/
 
 manageInput(1) :-  startGame.
 manageInput(2) :-  write('Mode not implemented yet!').
