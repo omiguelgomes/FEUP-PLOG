@@ -7,15 +7,15 @@ gameLoop(GameState, Player) :- \+gameOver(GameState, Player),
                                 display_game(GameState, Player),
                                 move(GameState, Player, [X,Y]),
                                 placePiece(GameState, Player, X, Y, NewGameState),
-                                changePlayer(Player, NewPlayer),
-                                gameLoop(NewGameState, NewPlayer).
+                                getOpponent(Player, Opponent),
+                                gameLoop(NewGameState, Opponent).
 
 /*If current player doesnt have any legal moves, switch to the next.*/
 move(GameState, Player, [X, Y]) :- canMove(GameState, Player), getMove(GameState, Player, [X, Y]).
 
 move(GameState, Player, [X, Y]) :- nl, write(Player), write(' has no possible moves!'), nl,
-                                    changePlayer(Player, NewPlayer),
-                                    getMove(GameState, NewPlayer, [X, Y]).
+                                    getOpponent(Player, Opponent),
+                                    getMove(GameState, Opponent, [X, Y]).
 
 
 
@@ -55,12 +55,12 @@ gameOver(GameState, Player) :- 2 == 3.
 canMove([H|T], Player).
 
 /*Checks if there is an opponent's piece adjacent to X, Y (must be true to play)*/
-hasOpponentPieceAdjacent(GameState, Player, X, Y) :- changePlayer(Player, Opponent), 
-                                ((getCell(X-1, Y-1, GameState, Value), (Value == Opponent));
-                                (getCell(X-1, Y, GameState, Value),   (Value == Opponent));
-                                (getCell(X-1, Y+1, GameState, Value), (Value == Opponent));
-                                (getCell(X, Y-1, GameState, Value),   (Value == Opponent));
-                                (getCell(X, Y+1, GameState, Value),   (Value == Opponent));
-                                (getCell(X+1, Y-1, GameState, Value), (Value == Opponent));
-                                (getCell(X+1, Y, GameState, Value),   (Value == Opponent));
-                                (getCell(X+1, Y+1, GameState, Value), (Value == Opponent))).
+hasOpponentPieceAdjacent(GameState, Player, X, Y) :- getOpponent(Player, Opponent), (
+                                                     getCell(X-1, Y-1, GameState, Opponent) ;
+                                                     getCell(X-1, Y, GameState, Opponent)   ;
+                                                     getCell(X-1, Y+1, GameState, Opponent) ;
+                                                     getCell(X, Y-1, GameState, Opponent)   ;
+                                                     getCell(X, Y+1, GameState, Opponent)   ;
+                                                     getCell(X+1, Y-1, GameState, Opponent) ;
+                                                     getCell(X+1, Y, GameState, Opponent)   ;
+                                                     getCell(X+1, Y+1, GameState, Opponent) ).
