@@ -4,6 +4,7 @@ startGame :- initial(GameState), gameLoop(GameState, 'B').
 
 /*Main loop*/
 gameLoop(GameState, Player) :- \+gameOver(GameState, Player),
+                                printScore(GameState), 
                                 display_game(GameState, Player),
                                 move(GameState, Player, [X,Y]),
                                 placePiece(GameState, Player, X, Y, NewGameState),
@@ -47,10 +48,11 @@ placePiece([_|T], Player, 0, -1, [Player|T]).
 placePiece([H|T], Player, X, -1, [H|R]) :- X > -1, X1 is X-1, placePiece(T, Player, X1, -1, R).
 
 
-gameOver(GameState, Player) :- 2 == 3.
+/*Checks if game is over*/
+gameOver(GameState, Player) :- \+canMove(GameState, Player), getOpponent(Player, Opponent), \+canMove(GameState, Opponent).
 
-/*Checks if Player can make a move.*/
-
+/*Checks if Player can make a move. Player can make a move if there is a square X, Y where
+an opponent's piece is adjacent(use function below), and must turn at least one of the opponent's piece*/
 canMove([H|T], Player).
 
 /*Checks if there is an opponent's piece adjacent to X, Y (must be true to play)*/
@@ -63,3 +65,18 @@ hasOpponentPieceAdjacent(GameState, Player, X, Y) :- getOpponent(Player, Opponen
                                                      getCell(X+1, Y-1, GameState, Opponent);
                                                      getCell(X+1, Y,   GameState, Opponent);
                                                      getCell(X+1, Y+1, GameState, Opponent)).
+
+/*Get current score on the table, player1 is black, player2 is white*/
+
+getScore(GameState, ScorePlayer1, ScorePlayer2) :- getPlayerScore('B', GameState, ScorePlayer1),
+                                                    getPlayerScore('W', GameState, ScorePlayer2).
+
+getPlayerScore(Player, GameState, Score) :- append(GameState, Flattened), getScoreInRow(Player, Flattened, Score).
+                                          
+getScoreInRow(_, [], 0).
+getScoreInRow(Player, [Player|T], Score) :- !, getScoreInRow(Player, T, ScoreTemp), Score is ScoreTemp + 1.
+getScoreInRow(Player, [_Player|T], Score) :- getScoreInRow(Player, T, Score).
+
+/*getScoreInRow('B', ['a', 'B', 'W', 'B', 'a', 'B', 'a'], Score).*/
+
+/*getScore([['B', 'W'], ['W', 'W']], Score1, Score2)*/
