@@ -3,7 +3,7 @@
 startGame :- initial(GameState), gameLoop(GameState, 'B').
 
 /*Main loop*/
-gameLoop(GameState, Player) :- \+gameOver(GameState, Player),
+gameLoop(GameState, Player) :- \+game_over(GameState, Player),
                                 printScore(GameState), 
                                 display_game(GameState, Player),
                                 move(GameState, Player, [X,Y]),
@@ -33,12 +33,14 @@ getMove(GameState, Player, [X, Y]) :- write('Invalid position, choose another on
 
 
 /*Flip all pieces after the players move*/
+flipPieces(GameState, Player, X, Y).
 
 
 /*Check if move is legal.*/
 validateMove(GameState, Player, X, Y) :- X < 10, X > 0, Y < 10, Y > 0,
                                 getCell(X, Y, GameState, Value), Value == ' ',
-                                hasOpponentPieceAdjacent(GameState, Player, X, Y).
+                                hasOpponentPieceAdjacent(GameState, Player, X, Y),
+                                flipPieces(GameState, Player, X, Y).
 
 /*Places piece in position X, Y*/
 placePiece([H|T], Player, X, 0, [H2|T]) :- placePiece(H, Player, X, -1, H2).
@@ -49,7 +51,8 @@ placePiece([H|T], Player, X, -1, [H|R]) :- X > -1, X1 is X-1, placePiece(T, Play
 
 
 /*Checks if game is over*/
-gameOver(GameState, Player) :- \+canMove(GameState, Player), getOpponent(Player, Opponent), \+canMove(GameState, Opponent).
+/*TODO: change second argument, to return who wins the game.*/
+game_over(GameState, Player) :- \+canMove(GameState, Player), getOpponent(Player, Opponent), \+canMove(GameState, Opponent).
 
 /*Checks if Player can make a move. Player can make a move if there is a square X, Y where
 an opponent's piece is adjacent(use function below), and must turn at least one of the opponent's piece*/
@@ -68,15 +71,14 @@ hasOpponentPieceAdjacent(GameState, Player, X, Y) :- getOpponent(Player, Opponen
 
 /*Get current score on the table, player1 is black, player2 is white*/
 
-getScore(GameState, ScorePlayer1, ScorePlayer2) :- getPlayerScore('B', GameState, ScorePlayer1),
-                                                    getPlayerScore('W', GameState, ScorePlayer2).
+getScore(GameState, ScorePlayer1, ScorePlayer2) :- value( GameState, 'B', ScorePlayer1),
+                                                    value( GameState, 'W', ScorePlayer2).
 
-getPlayerScore(Player, GameState, Score) :- append(GameState, Flattened), getScoreInRow(Player, Flattened, Score).
+value(GameState, Player, Score) :- append(GameState, Flattened), getScoreInRow(Player, Flattened, Score).
                                           
 getScoreInRow(_, [], 0).
 getScoreInRow(Player, [Player|T], Score) :- !, getScoreInRow(Player, T, ScoreTemp), Score is ScoreTemp + 1.
 getScoreInRow(Player, [_Player|T], Score) :- getScoreInRow(Player, T, Score).
 
-/*getScoreInRow('B', ['a', 'B', 'W', 'B', 'a', 'B', 'a'], Score).*/
-
-/*getScore([['B', 'W'], ['W', 'W']], Score1, Score2)*/
+/*TODO: returns list of possible moves for Player*/
+valid_moves(GameState, Player, ListofMoves).
