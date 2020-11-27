@@ -47,8 +47,7 @@ checkRowRight(GameState, Player, X, Y, Row, TempList, NewGameState):-
         ). 
 
 flipList(Player,GameState, [], Y, Aux):-
-    write('pois e'),
-    display_game(GameState, Player),nl.
+    write('pois e').
 
 flipList(Player,GameState, [H|Rest], Y, NewGameState):-
     write('H: '), write(H), nl,
