@@ -25,9 +25,7 @@ getMove(GameState, Player, [X, Y]) :- write(Player), write(' to play.'), nl,
                             write('Where would you like to play?'), nl,
                             write('X: '), read(Temp),
                             write('Y: '), read(Y),
-                            write('Temp is: '), write(Temp), nl,
                             convertX(Temp, X), 
-                            write('Converted is: '), write(X), nl,
                             validateMove(GameState, Player, X, Y).
 
 getMove(GameState, Player, [X, Y]) :- write('Invalid position, choose another one.'), nl, getMove(GameState, Player, [X, Y]).
