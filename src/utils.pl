@@ -32,9 +32,3 @@ convertX('h', 7).
 convertX('i', 8).
 convertX('j', 9).
 
-/*Appends list of lists into a single list*/
-append(Lists, Appended) :-
-	(   foreach(List,Lists),
-	    fromto(Appended,S0,S,[])
-	do  append(List, S, S0)
-	).
