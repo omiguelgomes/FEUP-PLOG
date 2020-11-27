@@ -1,5 +1,5 @@
 teste:-
-    initial(GameState), 
+    omega(GameState), 
     testeGameLoop(GameState, 'B').
 
 /*Main loop*/
@@ -45,9 +45,14 @@ checkRowRight(GameState, Player, X, Y, Row, TempList, NewGameState):-
             write('NewTempList: '), write(NewTempList), nl,
             checkRowRight(GameState, Player, NewX, Y, Row, NewTempList,NewGameState)
         ). 
+flipList(Player,GameState, [], Y, NewGameState):-
+    write('omega'),
+    display_game(GameState, Player),nl, nl.
 
 flipList(Player,GameState, [], Y, Aux):-
-    write('pois e').
+    write('pois e'),
+    display_game(GameState, Player),nl, nl,
+    flipList(Player,GameState,[],Y,GameState).
 
 flipList(Player,GameState, [H|Rest], Y, NewGameState):-
     write('H: '), write(H), nl,
