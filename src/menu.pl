@@ -11,7 +11,7 @@ manageInput(1) :-  startGame.
 manageInput(2) :-  write('Mode not implemented yet!').
 manageInput(3) :-  write('Mode not implemented yet!').
 manageInput(Else) :- write('Invalid mode!').
-%manageInput(0) :- exit program, there should be a built-in function
+/*manageInput(0) :- exit program, there should be a built-in function*/
 
 
 printMainMenu :- 

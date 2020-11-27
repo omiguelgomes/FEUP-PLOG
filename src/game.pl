@@ -23,9 +23,11 @@ move(GameState, Player, [X, Y]) :- nl, write(Player), write(' has no possible mo
 /*Receive input from player, and check if the move is legal.*/
 getMove(GameState, Player, [X, Y]) :- write(Player), write(' to play.'), nl,
                             write('Where would you like to play?'), nl,
-                            write('X: '), read(TempX),
+                            write('X: '), read(Temp),
                             write('Y: '), read(Y),
-                            convertX(TempX, X),
+                            write('Temp is: '), write(Temp), nl,
+                            convertX(Temp, X), 
+                            write('Converted is: '), write(X), nl,
                             validateMove(GameState, Player, X, Y).
 
 getMove(GameState, Player, [X, Y]) :- write('Invalid position, choose another one.'), nl, getMove(GameState, Player, [X, Y]).

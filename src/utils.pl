@@ -10,16 +10,27 @@ getOpponent('B', 'W').
 getOpponent('W', 'B').
 
 /*Converts x position from letter to number*/
-convertX('a', 0). convertX('A', 0).
-convertX('b', 1). convertX('B', 1).
-convertX('c', 2). convertX('C', 2).
-convertX('d', 3). convertX('D', 3).
-convertX('e', 4). convertX('E', 4).
-convertX('f', 5). convertX('F', 5).
-convertX('g', 6). convertX('G', 6).
-convertX('h', 7). convertX('H', 7).
-convertX('i', 8). convertX('I', 8).
-convertX('j', 9). convertX('J', 9).
+convertX('A', 0).
+convertX('B', 1).
+convertX('C', 2).
+convertX('D', 3).
+convertX('E', 4).
+convertX('F', 5).
+convertX('G', 6).
+convertX('H', 7).
+convertX('I', 8).
+convertX('J', 9).
+
+convertX('a', 0).
+convertX('b', 1).
+convertX('c', 2).
+convertX('d', 3).
+convertX('e', 4).
+convertX('f', 5).
+convertX('g', 6).
+convertX('h', 7).
+convertX('i', 8).
+convertX('j', 9).
 
 /*Appends list of lists into a single list*/
 append(Lists, Appended) :-
