@@ -37,7 +37,7 @@ checkRowRight(GameState, Player, X, Y, Row, TempList, NewGameState):-
         ;   /* Player piece, flip current list, don't add */
             Value == Player -> write('mesmoaqui'),write('TempList: '), 
                                 write(TempList), nl,flipList(Player,GameState, TempList, Y, NewGameState),
-                                write('bateu'),nl,                                
+                                write('bateu'),nl,  display_game(NewGameState, Player),nl, nl,                              
                                 checkRowRight(NewGameState, Player, 9, Y, Row, TempList,NewGameState)    
         ;   /* otherwise (oponent piece append to fliplist) -> */
             append(TempList, [NewX], NewTempList),
@@ -48,11 +48,6 @@ checkRowRight(GameState, Player, X, Y, Row, TempList, NewGameState):-
 flipList(Player,GameState, [], Y, NewGameState):-
     write('omega'),
     display_game(GameState, Player),nl, nl.
-
-flipList(Player,GameState, [], Y, Aux):-
-    write('pois e'),
-    display_game(GameState, Player),nl, nl,
-    flipList(Player,GameState,[],Y,GameState).
 
 flipList(Player,GameState, [H|Rest], Y, NewGameState):-
     write('H: '), write(H), nl,
