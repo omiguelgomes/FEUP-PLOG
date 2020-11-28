@@ -12,32 +12,52 @@ testeGameLoop(GameState, Player) :-
     getOpponent(Player, Opponent),
     testeGameLoop(TrueFinal, Opponent).
 
-testeflipPieces(GameState, Player, X, Y, UltraNewGameState, TrueFinal):-
+testeflipPieces(GameState, Player, X, Y, UltraNewGameState, Final):-
     /*checkar linha*/
     getRow(Y, GameState, Row),
     write('entrar'),
-    checkRowRight(GameState, Player, X, Y, Row, [], UltraNewGameState, TrueFinal),
-    
+    checkRowRight(GameState, Player, X, Y, Row, [], TempList),
+    checkRowLeft(GameState, Player, X, Y, Row, [], TempList2),
+    append(TempList, TempList2, NewTempList),
+    flipList(Player,GameState, NewTempList, Y, NewGameState, Final),
     /*Checkar coluna TODO*/
     /*Checkar diagonal TODO*/
     write('sair').
 
-checkRowRight(GameState, Player, 9, Y, Row, TempList, GameState, GameState).
+checkRowRight(GameState, Player, 9, Y, Row, TempList, TempList).
 
-checkRowRight(GameState, Player, X, Y, Row, TempList, NewGameState, TrueFinal):-
+checkRowRight(GameState, Player, X, Y, Row, TempList, FinalList):-
     NewX is X+1,
     getCellInRow(NewX, Row, Value),
     (       /* Free space, can end*/ 
-            Value == ' ' -> checkRowRight(GameState, Player, 9, Y, Row, TempList,NewGameState, TrueFinal)
+            Value == ' ' -> checkRowRight(GameState, Player, 9, Y, Row, TempList,FinalList)
         ;    /* Wall piece, can end */
-            Value == '#' -> checkRowRight(GameState, Player, 9, Y, Row, TempList,NewGameState, TrueFinal) 
+            Value == '#' -> checkRowRight(GameState, Player, 9, Y, Row, TempList,FinalList) 
         ;   /* Player piece, flip current list, dont add */
             Value == Player ->  flipList(Player,GameState, TempList, Y, NewGameState, Final),                             
-                                checkRowRight(Final, Player, 9, Y, Row, TempList,_, TrueFinal)    
+                                checkRowRight(Final, Player, 9, Y, Row, TempList, FinalList)    
         ;   /* otherwise (oponent piece append to fliplist) -> */
             append(TempList, [NewX], NewTempList),
-            checkRowRight(GameState, Player, NewX, Y, Row, NewTempList,NewGameState, TrueFinal)
+            checkRowRight(GameState, Player, NewX, Y, Row, NewTempList, FinalList)
         ).
+
+checkRowLeft(GameState, Player, 0, Y, Row, TempList, TempList).
+
+checkRowLeft(GameState, Player, X, Y, Row, TempList, FinalList):-
+    NewX is X-1,
+    getCellInRow(NewX, Row, Value),
+    (       /* Free space, can end*/ 
+            Value == ' ' -> checkRowRight(GameState, Player, 0, Y, Row, TempList,FinalList)
+        ;    /* Wall piece, can end */
+            Value == '#' -> checkRowRight(GameState, Player, 0, Y, Row, TempList,FinalList) 
+        ;   /* Player piece, flip current list, dont add */
+            Value == Player ->  flipList(Player,GameState, TempList, Y, NewGameState, Final),                             
+                                checkRowRight(Final, Player, 0, Y, Row, TempList, FinalList)    
+        ;   /* otherwise (oponent piece append to fliplist) -> */
+            append(TempList, [NewX], NewTempList),
+            checkRowRight(GameState, Player, NewX, Y, Row, NewTempList, FinalList)
+        ).    
+
      
 flipList(Player,GameState, [], Y, GameState, GameState).
 
