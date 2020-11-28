@@ -34,12 +34,11 @@ checkRowRight(GameState, Player, X, Y, Row, TempList, FinalList):-
         ;    /* Wall piece, can end */
             Value == '#' -> checkRowRight(GameState, Player, 9, Y, Row, TempList,FinalList) 
         ;   /* Player piece, flip current list, dont add */
-            Value == Player ->  flipList(Player,GameState, TempList, Y, NewGameState, Final),                             
-                                checkRowRight(Final, Player, 9, Y, Row, TempList, FinalList)    
+            Value == Player -> checkRowRight(Final, Player, 9, Y, Row, TempList, FinalList)    
         ;   /* otherwise (oponent piece append to fliplist) -> */
             append(TempList, [NewX], NewTempList),
             checkRowRight(GameState, Player, NewX, Y, Row, NewTempList, FinalList)
-        ).
+    ).
 
 checkRowLeft(GameState, Player, 0, Y, Row, TempList, TempList).
 
@@ -51,8 +50,7 @@ checkRowLeft(GameState, Player, X, Y, Row, TempList, FinalList):-
         ;    /* Wall piece, can end */
             Value == '#' -> checkRowRight(GameState, Player, 0, Y, Row, TempList,FinalList) 
         ;   /* Player piece, flip current list, dont add */
-            Value == Player ->  flipList(Player,GameState, TempList, Y, NewGameState, Final),                             
-                                checkRowRight(Final, Player, 0, Y, Row, TempList, FinalList)    
+            Value == Player ->  checkRowRight(Final, Player, 0, Y, Row, TempList, FinalList)    
         ;   /* otherwise (oponent piece append to fliplist) -> */
             append(TempList, [NewX], NewTempList),
             checkRowRight(GameState, Player, NewX, Y, Row, NewTempList, FinalList)
@@ -64,5 +62,3 @@ flipList(Player,GameState, [], Y, GameState, GameState).
 flipList(Player,GameState, [H|Rest], Y, NewGameState, Final):-
     placePiece(GameState, Player, H, Y, NewGameState),
     flipList(Player, NewGameState, Rest, Y, _, Final).
-
-
