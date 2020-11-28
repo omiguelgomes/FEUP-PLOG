@@ -45,16 +45,16 @@ checkRowRight(GameState, Player, X, Y, Row, TempList, NewGameState):-
             write('NewTempList: '), write(NewTempList), nl,
             checkRowRight(GameState, Player, NewX, Y, Row, NewTempList,NewGameState)
         ). 
-flipList(Player,GameState, [], Y, NewGameState):-
+flipList(Player,GameState, [], Y, GameState):-
     write('omega'),
     display_game(GameState, Player),nl, nl.
 
 flipList(Player,GameState, [H|Rest], Y, NewGameState):-
     write('H: '), write(H), nl,
-    write('lag'),
     write('Rest: '), write(Rest), nl,
     placePiece(GameState, Player, H, Y, NewGameState),
     write('lalalalalalalalal'),nl,
-    flipList(Player, NewGameState, Rest, Y, _).
+    flipList(Player, NewGameState, Rest, Y, _),
+    nl, write('display final a sair:'), nl, display_game(NewGameState, Player),nl.
 
 
