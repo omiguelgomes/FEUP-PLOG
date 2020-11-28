@@ -12,8 +12,13 @@ manageInput(2) :-   write('What should the AI difficulty be? (1-5)\n'),
                     read(Level),
                     startGamePvsC(Level).
 
-manageInput(3) :-  StartGameCvsC.
-manageInput(Else) :- write('Invalid mode!').
+manageInput(3) :-   !, write('What should the black AI difficulty be? (1-5)\n'),
+                       read(LevelBlack),
+                       write('What should the white AI difficulty be? (1-5)\n'),
+                       read(LevelWhite),
+                       startGameCvsC(LevelBlack, LevelWhite).
+
+manageInput(_) :- write('Invalid mode!').
 /*manageInput(0) :- exit program, there should be a built-in function*/
 
 
