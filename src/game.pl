@@ -2,14 +2,26 @@
 /*first startGame, calls game main loop*/
 startGame :- initial(GameState), gameLoop(GameState, 'B').
 
-/*Main loop*/
+startGamePvsC :- initial(GameState), gameLoopPvsC(GameState, 'B').
+
+startGameCvsC :- initial(GameState), gameLoopCvsC(GameState, 'B').
+
+/*PvP Main loop*/
 gameLoop(GameState, Player) :- \+game_over(GameState, Player),
-                                printScore(GameState), 
                                 display_game(GameState, Player),
                                 move(GameState, Player, [X,Y]),
                                 placePiece(GameState, Player, X, Y, NewGameState),
                                 getOpponent(Player, Opponent),
                                 gameLoop(NewGameState, Opponent).
+
+/*PvC Main loop*/
+gameLoopPvsC(GameState, Player) :- \+game_over(GameState, Player),
+                                   display_game(GameState, Player),
+                                   move(GameState, Player, [X,Y]),
+                                   placePiece(GameState, Player, X, Y, NewGameState),
+                                   getOpponent(Player, Opponent),
+                                   gameLoop(NewGameState, Opponent).
+
 
 /*If current player doesnt have any legal moves, switch to the next.*/
 move(GameState, Player, [X, Y]) :- canMove(GameState, Player), getMove(GameState, Player, [X, Y]).

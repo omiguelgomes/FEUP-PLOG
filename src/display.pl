@@ -1,4 +1,4 @@
-display_game(GameState, Player) :- printCoordsBar, printBoard(GameState, 0).
+display_game(GameState, Player) :- printScore(GameState), printCoordsBar, printBoard(GameState, 0).
 
 printCoordsBar :- nl, write('      A   B   C   D   E   F   G   H   I   J  \n'),
                       write('    -----------------------------------------\n').
@@ -21,7 +21,7 @@ printRow([]) :- write('|').
 
 /*prints current score*/
 printScore(GameState) :- getScore(GameState, SP1, SP2),
-                         write('SCORE: '), 
+                         write('\nSCORE: '), 
                          format('  White: ~d', [SP2]),
                          format('  Black: ~d\n', [SP1]).
 
