@@ -8,53 +8,41 @@ testeGameLoop(GameState, Player) :-
     move(GameState, Player, [X,Y]),
     placePiece(GameState, Player, X, Y, NewGameState),
     /*Testarino*/
-    testeflipPieces(NewGameState, Player, X, Y, UltraNewGameState),
+    testeflipPieces(NewGameState, Player, X, Y, UltraNewGameState, TrueFinal),
     getOpponent(Player, Opponent),
-    testeGameLoop(UltraNewGameState, Opponent).
+    testeGameLoop(TrueFinal, Opponent).
 
-testeflipPieces(GameState, Player, X, Y, UltraNewGameState):-
+testeflipPieces(GameState, Player, X, Y, UltraNewGameState, TrueFinal):-
     /*checkar linha*/
     getRow(Y, GameState, Row),
     write('entrar'),
-    checkRowRight(GameState, Player, X, Y, Row, [], UltraNewGameState),
+    checkRowRight(GameState, Player, X, Y, Row, [], UltraNewGameState, TrueFinal),
+    
     /*Checkar coluna TODO*/
     /*Checkar diagonal TODO*/
     write('sair').
 
-checkRowRight(GameState, Player, 9, Y, Row, TempList, GameState).
+checkRowRight(GameState, Player, 9, Y, Row, TempList, GameState, GameState).
 
-checkRowRight(GameState, Player, X, Y, Row, TempList, NewGameState):-
-    nl,write('x= '),write(X),nl,
+checkRowRight(GameState, Player, X, Y, Row, TempList, NewGameState, TrueFinal):-
     NewX is X+1,
-    write('NewX= '),write(NewX),nl,
     getCellInRow(NewX, Row, Value),
-    write('value= '),write(Value),nl,
-    write('player= '),write(Player),nl,nl,
     (       /* Free space, can end*/ 
-            Value == ' ' -> checkRowRight(GameState, Player, 9, Y, Row, TempList,NewGameState)
+            Value == ' ' -> checkRowRight(GameState, Player, 9, Y, Row, TempList,NewGameState, TrueFinal)
         ;    /* Wall piece, can end */
-            Value == '#' -> checkRowRight(GameState, Player, 9, Y, Row, TempList,NewGameState) 
+            Value == '#' -> checkRowRight(GameState, Player, 9, Y, Row, TempList,NewGameState, TrueFinal) 
         ;   /* Player piece, flip current list, don't add */
-            Value == Player -> write('mesmoaqui'),write('TempList: '), 
-                                write(TempList), nl,flipList(Player,GameState, TempList, Y, NewGameState),
-                                write('bateu'),nl,  display_game(NewGameState, Player),nl, nl,                              
-                                checkRowRight(NewGameState, Player, 9, Y, Row, TempList,NewGameState)    
+            Value == Player ->  flipList(Player,GameState, TempList, Y, NewGameState, Final),                             
+                                checkRowRight(Final, Player, 9, Y, Row, TempList, TrueFinal)    
         ;   /* otherwise (oponent piece append to fliplist) -> */
             append(TempList, [NewX], NewTempList),
-            write('TempList: '), write(TempList), nl,
-            write('NewTempList: '), write(NewTempList), nl,
-            checkRowRight(GameState, Player, NewX, Y, Row, NewTempList,NewGameState)
-        ). 
-flipList(Player,GameState, [], Y, GameState):-
-    write('omega'),
-    display_game(GameState, Player),nl, nl.
+            checkRowRight(GameState, Player, NewX, Y, Row, NewTempList,NewGameState, TrueFinal)
+        ).
+     
+flipList(Player,GameState, [], Y, GameState, GameState).
 
-flipList(Player,GameState, [H|Rest], Y, NewGameState):-
-    write('H: '), write(H), nl,
-    write('Rest: '), write(Rest), nl,
+flipList(Player,GameState, [H|Rest], Y, NewGameState, Final):-
     placePiece(GameState, Player, H, Y, NewGameState),
-    write('lalalalalalalalal'),nl,
-    flipList(Player, NewGameState, Rest, Y, _),
-    nl, write('display final a sair:'), nl, display_game(NewGameState, Player),nl.
+    flipList(Player, NewGameState, Rest, Y, _, Final).
 
 
