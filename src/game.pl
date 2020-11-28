@@ -14,14 +14,14 @@ gameLoop(GameState, Player) :- \+game_over(GameState, Player),
 /*If current player doesnt have any legal moves, switch to the next.*/
 move(GameState, Player, [X, Y]) :- canMove(GameState, Player), getMove(GameState, Player, [X, Y]).
 
-move(GameState, Player, [X, Y]) :- nl, write(Player), write(' has no possible moves!'), nl,
-                                    getOpponent(Player, Opponent),
-                                    getMove(GameState, Opponent, [X, Y]).
+move(GameState, Player, [X, Y]) :- format('\n ~s has no possible moves!\n', [Player]),
+                                   getOpponent(Player, Opponent),
+                                   getMove(GameState, Opponent, [X, Y]).
 
 
 
 /*Receive input from player, and check if the move is legal.*/
-getMove(GameState, Player, [X, Y]) :- write(Player), write(' to play.'), nl,
+getMove(GameState, Player, [X, Y]) :- format('~s to play.', [Player]), nl,
                             write('Where would you like to play?'), nl,
                             write('X: '), read(Temp),
                             write('Y: '), read(Y),

@@ -1,30 +1,29 @@
 display_game(GameState, Player) :- printCoordsBar, printBoard(GameState, 0).
 
-printCoordsBar :- nl, write('      A   B   C   D   E   F   G   H   I   J  '), nl,
-                  write('    -----------------------------------------'), nl.
+printCoordsBar :- nl, write('      A   B   C   D   E   F   G   H   I   J  \n'),
+                      write('    -----------------------------------------\n').
 
 /*prints board, row by row*/
 
-printBoard([H|T], RowNr) :- write('  '), write(RowNr), write(' '),
+printBoard([H|T], RowNr) :- format('  ~d ', [RowNr]),
                             NextRowNr is RowNr + 1,
                             printRow(H),
                             nl,
-                            write('    -----------------------------------------'), nl,
+                            write('    -----------------------------------------\n'),
                             printBoard(T, NextRowNr).
 
 printBoard([], _).
 
 /*prints row, cell by cell*/
 
-printRow([H|T]) :- write('| '), write(H), write(' '), printRow(T). 
+printRow([H|T]) :- format('| ~s ', [H]), printRow(T). 
 printRow([]) :- write('|').
 
 /*prints current score*/
 printScore(GameState) :- getScore(GameState, SP1, SP2),
                          write('SCORE: '), 
-                         write('  White: '), write(SP2),
-                         write('  Black: '), write(SP1), nl.
-
+                         format('  White: ~d', [SP2]),
+                         format('  Black: ~d\n', [SP1]).
 
 
 

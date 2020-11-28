@@ -8,37 +8,37 @@ play :- printMainMenu,
 /*parse input for game mode*/
 
 manageInput(1) :-  startGame.
-manageInput(2) :-  write('Mode not implemented yet!').
-manageInput(3) :-  write('Mode not implemented yet!').
+manageInput(2) :-  startGamePvsC.
+manageInput(3) :-  StartGameCvsC.
 manageInput(Else) :- write('Invalid mode!').
 /*manageInput(0) :- exit program, there should be a built-in function*/
 
 
 printMainMenu :- 
     nl,nl,
-    write(' _______________________________________________________________________ '),nl,
-    write('|                                                                       |'),nl,
-    write('|                                                                       |'),nl,
-    write('|      |||    |||  |||||  ||||||  ||||||| ||      ||       ||||||       |'),nl,
-    write('|      ||||  |||| ||   || ||   || ||      ||      ||      ||    ||      |'),nl,
-    write('|      || |||| || ||||||| ||||||  |||||   ||      ||      ||    ||      |'),nl,
-    write('|      ||  ||  || ||   || ||      ||      ||      ||      ||    ||      |'),nl,
-    write('|      ||      || ||   || ||      ||||||| ||||||| |||||||  ||||||       |'),nl,
-    write('|                                                                       |'),nl,
-    write('|                                                                       |'),nl,
-    write('|                             Miguel Gomes                              |'),nl,
-    write('|                            Pedro Teixeira                             |'),nl,
-    write('|               -----------------------------------------               |'),nl,
-    write('|                                                                       |'),nl,
-    write('|                                                                       |'),nl,
-    write('|                          1. Player vs Player                          |'),nl,
-    write('|                                                                       |'),nl,
-    write('|                          2. Player vs Computer                        |'),nl,
-    write('|                                                                       |'),nl,
-	write('|                          3. Computer vs Computer                      |'),nl,
-    write('|                                                                       |'),nl,
-    write('|                          0. Exit                                      |'),nl,
-    write('|                                                                       |'),nl,
-    write('|                                                                       |'),nl,
-    write('|_______________________________________________________________________|'),nl,
+    write(' _______________________________________________________________________ \n'),
+    write('|                                                                       |\n'),
+    write('|                                                                       |\n'),
+    write('|      |||    |||  |||||  ||||||  ||||||| ||      ||       ||||||       |\n'),
+    write('|      ||||  |||| ||   || ||   || ||      ||      ||      ||    ||      |\n'),
+    write('|      || |||| || ||||||| ||||||  |||||   ||      ||      ||    ||      |\n'),
+    write('|      ||  ||  || ||   || ||      ||      ||      ||      ||    ||      |\n'),
+    write('|      ||      || ||   || ||      ||||||| ||||||| |||||||  ||||||       |\n'),
+    write('|                                                                       |\n'),
+    write('|                                                                       |\n'),
+    write('|                             Miguel Gomes                              |\n'),
+    write('|                            Pedro Teixeira                             |\n'),
+    write('|               -----------------------------------------               |\n'),
+    write('|                                                                       |\n'),
+    write('|                                                                       |\n'),
+    write('|                          1. Player vs Player                          |\n'),
+    write('|                                                                       |\n'),
+    write('|                          2. Player vs Computer                        |\n'),
+    write('|                                                                       |\n'),
+	write('|                          3. Computer vs Computer                      |\n'),
+    write('|                                                                       |\n'),
+    write('|                          0. Exit                                      |\n'),
+    write('|                                                                       |\n'),
+    write('|                                                                       |\n'),
+    write('|_______________________________________________________________________|\n'),
     nl,nl.

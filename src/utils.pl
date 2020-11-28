@@ -38,5 +38,5 @@ convertX('j', 9).
 /*If we reached the last cell, return 0,0*/
 nextCell(8, 8, 0, 0).
 /*If we reached the last cell in the row, move to next row*/
-nextCell(8, Y, 1, NextY) :- NextY is Y + 1.
+nextCell(8, Y, 1, NextY) :-  NextY is Y + 1.
 nextCell(X, Y, NextX, Y) :-  NextX is X + 1.
