@@ -8,7 +8,10 @@ play :- printMainMenu,
 /*parse input for game mode*/
 
 manageInput(1) :-  startGame.
-manageInput(2) :-  startGamePvsC.
+manageInput(2) :-   write('What should the AI difficulty be? (1-5)\n'),
+                    read(Level),
+                    startGamePvsC(Level).
+
 manageInput(3) :-  StartGameCvsC.
 manageInput(Else) :- write('Invalid mode!').
 /*manageInput(0) :- exit program, there should be a built-in function*/
