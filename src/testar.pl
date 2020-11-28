@@ -33,7 +33,7 @@ checkRowRight(GameState, Player, X, Y, Row, TempList, NewGameState, TrueFinal):-
             Value == '#' -> checkRowRight(GameState, Player, 9, Y, Row, TempList,NewGameState, TrueFinal) 
         ;   /* Player piece, flip current list, don't add */
             Value == Player ->  flipList(Player,GameState, TempList, Y, NewGameState, Final),                             
-                                checkRowRight(Final, Player, 9, Y, Row, TempList, TrueFinal)    
+                                checkRowRight(Final, Player, 9, Y, Row, TempList,_, TrueFinal)    
         ;   /* otherwise (oponent piece append to fliplist) -> */
             append(TempList, [NewX], NewTempList),
             checkRowRight(GameState, Player, NewX, Y, Row, NewTempList,NewGameState, TrueFinal)
