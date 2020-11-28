@@ -55,7 +55,7 @@ game_over(GameState, Player) :- \+canMove(GameState, Player), getOpponent(Player
 
 /*Checks if Player can make a move. Player can make a move if there is a square X, Y where
 an opponent's piece is adjacent(use function below), and must turn at least one of the opponent's piece*/
-canMove(GameState, Player) :- validMoves(GameState, Player, ListofMoves), \+length(ListofMoves, 0).
+canMove(GameState, Player) :- valid_moves(GameState, Player, ListofMoves), \+length(ListofMoves, 0).
 
 /*Checks if there is an opponent's piece adjacent to X, Y (must be true to play)*/
 hasOpponentPieceAdjacent(GameState, Player, X, Y) :- getOpponent(Player, Opponent), (
