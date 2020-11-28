@@ -38,9 +38,8 @@ flipPieces(GameState, Player, X, Y).
 
 /*Check if move is legal.*/
 validateMove(GameState, Player, X, Y) :- X < 10, X > 0, Y < 10, Y > 0,
-                                getCell(X, Y, GameState, Value), Value == ' ',
-                                hasOpponentPieceAdjacent(GameState, Player, X, Y),
-                                flipPieces(GameState, Player, X, Y).
+                                         getCell(X, Y, GameState, Value), Value == ' ',
+                                         hasOpponentPieceAdjacent(GameState, Player, X, Y).                                         
 
 /*Places piece in position X, Y*/
 placePiece([H|T], Player, X, 0, [H2|T]) :- placePiece(H, Player, X, -1, H2).
@@ -83,4 +82,15 @@ getScoreInRow(Player, [_Player|T], Score) :- getScoreInRow(Player, T, Score).
 /*TODO: returns list of possible moves for Player*/
 valid_moves(GameState, Player, ListofMoves) :- valid_moves(GameState, Player, ListofMoves, [], 1, 1).
 
-valid_moves()
+valid_moves(GameState, Player, ListofMoves, TempMoves, X, Y) :- (X \= 0 ; Y \= 0),
+                                                                validateMove(GameState, Player, X, Y), 
+                                                                append(TempMoves, [[X, Y]], NewTempMoves),
+                                                                nextCell(X, Y, NewX, NewY),
+                                                                valid_moves(GameState, Player, ListofMoves, NewTempMoves, NewX, NewY).
+
+valid_moves(GameState, Player, ListofMoves, TempMoves, X, Y) :- (X \= 0 ; Y \= 0),
+                                                                \+validateMove(GameState, Player, X, Y), 
+                                                                nextCell(X, Y, NewX, NewY),
+                                                                valid_moves(GameState, Player, ListofMoves, TempMoves, NewX, NewY).
+
+valid_moves(_, _, ListofMoves, ListofMoves, 0, 0).
