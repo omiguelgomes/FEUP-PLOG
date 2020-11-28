@@ -55,7 +55,7 @@ game_over(GameState, Player) :- \+canMove(GameState, Player), getOpponent(Player
 
 /*Checks if Player can make a move. Player can make a move if there is a square X, Y where
 an opponent's piece is adjacent(use function below), and must turn at least one of the opponent's piece*/
-canMove(GameState, Player) :- validMoves(GameState, Player, ListofMoves), \+length(ListofMoves, 0).
+canMove(GameState, Player) :- valid_moves(GameState, Player, ListofMoves), \+length(ListofMoves, 0).
 
 /*Checks if there is an opponent's piece adjacent to X, Y (must be true to play)*/
 hasOpponentPieceAdjacent(GameState, Player, X, Y) :- getOpponent(Player, Opponent), (
@@ -79,18 +79,18 @@ getScoreInRow(_, [], 0).
 getScoreInRow(Player, [Player|T], Score) :- !, getScoreInRow(Player, T, ScoreTemp), Score is ScoreTemp + 1.
 getScoreInRow(Player, [_Player|T], Score) :- getScoreInRow(Player, T, Score).
 
-/*TODO: returns list of possible moves for Player*/
+/*Returns list of possible moves for Player*/
 valid_moves(GameState, Player, ListofMoves) :- valid_moves(GameState, Player, ListofMoves, [], 1, 1).
 
+valid_moves(_, _, ListofMoves, ListofMoves, 0, 0).
+
 valid_moves(GameState, Player, ListofMoves, TempMoves, X, Y) :- (X \= 0 ; Y \= 0),
-                                                                validateMove(GameState, Player, X, Y), 
-                                                                append(TempMoves, [[X, Y]], NewTempMoves),
-                                                                nextCell(X, Y, NewX, NewY),
+                                                                validateMove(GameState, Player, X, Y),
+                                                                append(TempMoves, [X-Y], NewTempMoves),
+                                                                nextCell(X, Y, NewX, NewY), !,
                                                                 valid_moves(GameState, Player, ListofMoves, NewTempMoves, NewX, NewY).
 
 valid_moves(GameState, Player, ListofMoves, TempMoves, X, Y) :- (X \= 0 ; Y \= 0),
                                                                 \+validateMove(GameState, Player, X, Y), 
-                                                                nextCell(X, Y, NewX, NewY),
+                                                                nextCell(X, Y, NewX, NewY), !,
                                                                 valid_moves(GameState, Player, ListofMoves, TempMoves, NewX, NewY).
-
-valid_moves(_, _, ListofMoves, ListofMoves, 0, 0).
