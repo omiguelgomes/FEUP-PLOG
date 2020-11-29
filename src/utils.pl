@@ -21,6 +21,18 @@ convertX('h', 7).
 convertX('i', 8).
 convertX('j', 9).
 
+/*Position of the bonuses*/
+bonus([3-1, 5-1, 8-2, 2-4, 1-6, 7-6, 3-8, 6-8]).
+
+getBonus(GameState, Player, BonusScore) :- bonus(BonusList), getBonus(GameState, Player, BonusList, BonusScore, 0).
+
+getBonus(GameState, Player, [X-Y|T], BonusScore, Temp) :- getCell(X, Y, GameState, Player), 
+                                                          NewTemp is Temp + 3,
+                                                          getBonus(GameState, Player, T, BonusScore, NewTemp).
+
+getBonus(GameState, Player, [X-Y|T], BonusScore, Temp) :- getCell(X, Y, GameState, _),     
+                                                          getBonus(GameState, Player, T, BonusScore, Temp).
+getBonus(_, _, [], Bonus, Bonus).
 
 /*Used to iterate through board, left to right, top to bottom*/
 

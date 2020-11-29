@@ -98,7 +98,7 @@ flipPieces(GameState, Player, X, Y, UltraNewGameState, DiagonalFinal2):-
 
 /*Check if move is legal.*/
 validateMove(GameState, Player, X, Y) :- X < 10, X > 0, Y < 10, Y > 0,
-                                         getCell(X, Y, GameState, Value), Value == ' ',
+                                         getCell(X, Y, GameState, Value), (Value == ' ' ; Value == 'P'),
                                          hasOpponentPieceAdjacent(GameState, Player, X, Y),
                                          flipPieces(GameState, Player, X, Y, _, GameStateAfterMove),
                                          GameState \== GameStateAfterMove.
@@ -136,11 +136,11 @@ hasOpponentPieceAdjacent(GameState, Player, X, Y) :- getOpponent(Player, Opponen
 getScore(GameState, ScorePlayer1, ScorePlayer2) :- value( GameState, 'B', ScorePlayer1),
                                                     value( GameState, 'W', ScorePlayer2).
 
-value(GameState, Player, Score) :- append(GameState, Flattened), getScoreInRow(Player, Flattened, Score).
+value(GameState, Player, Score) :- append(GameState, Flattened), getScoreInRow(Player, Flattened, PiecesScore), getBonus(GameState, Player, BonusScore),
+                                    Score is PiecesScore+BonusScore.
                                           
 getScoreInRow(_, [], 0).
 getScoreInRow(Player, [Player|T], Score) :- !, getScoreInRow(Player, T, ScoreTemp), Score is ScoreTemp + 1.
-getScoreInRow(Player, ['P'|T], Score) :- !, getScoreInRow(Player, T, ScoreTemp), Score is ScoreTemp + 4.
 getScoreInRow(Player, [_|T], Score) :- getScoreInRow(Player, T, Score).
 
 /*Returns list of possible moves for Player*/
