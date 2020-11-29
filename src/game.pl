@@ -160,7 +160,7 @@ getScoreInRow(_, [], 0).
 getScoreInRow(Player, [Player|T], Score) :- !, getScoreInRow(Player, T, ScoreTemp), Score is ScoreTemp + 1.
 getScoreInRow(Player, [_|T], Score) :- getScoreInRow(Player, T, Score).
 
-/*Returns list of possible moves for Player*/
+/*Returns list of possible moves fo r Player*/
 valid_moves(GameState, Player, ListofMoves) :- valid_moves(GameState, Player, ListofMoves, [], 1, 1).
 
 valid_moves(_, _, ListofMoves, ListofMoves, 0, 0).
@@ -176,12 +176,12 @@ valid_moves(GameState, Player, ListofMoves, TempMoves, X, Y) :- (X \= 0 ; Y \= 0
                                                                 nextCell(X, Y, NewX, NewY), !,
                                                                 valid_moves(GameState, Player, ListofMoves, TempMoves, NewX, NewY).
 
-endGame(GameState, 'W') :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 < ScorePlayer2,
+endGame(GameState, 'W') :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 < ScorePlayer2, !,
                       format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
                       
                       write('White won!\n').
 
-endGame(GameState, 'B') :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 > ScorePlayer2,
+endGame(GameState, 'B') :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 > ScorePlayer2, !,
                       format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
                      
                       write('Black won!\n').

@@ -4,5 +4,4 @@
 :- include('game.pl').
 :- include('display.pl').
 :- include('utils.pl').
-:- include('testar.pl').
 :- include('ai.pl'). 
