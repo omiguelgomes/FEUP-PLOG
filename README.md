@@ -8,11 +8,16 @@ Miguel Rodrigues Gomes up201605908
 
 Pedro Miguel Afonso Teixeira  up201505916
 
+## Project installation and setup
+In order to run our game, after installing SICSTUS, the user should consult the files by running the command consult('m.pl'), which will consult all the files needed. Afterwards, run 'play.' and the game will begin.
+
 
 ## The game
 Mapello is a board game based on Reversi designed by Simon M. Lucas. The objective is to have the highest ammount of pieces of the same colour (the one player chose) when there's no longer any valid move available. 
 
 Full set of rules on https://nestorgames.com/#mapello_detail
+
+### Add game rules, full text
 
 ## Game Logic
 The board is represented as a list of lists. Each list representing a row, and containing 10 elements, one for each cell.
