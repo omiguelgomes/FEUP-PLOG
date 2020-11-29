@@ -251,7 +251,7 @@ This type of functions get the adjacent piece and get their value with getCell()
  - adds the new cell to the list (if it finds the oponent piece, "otherwise" in the function);
  - Returns the current list (found a player or a joker and therefore we are ready to flip).
  
-
+## AI
 Apart from the PlayervsPlayer mode, we have implemented a PlayervsComputer and a ComputervsComputer mode. In order to obtain a move for the Computer, we have implemented the choose_move/4 predicate. Our ai has 5 different levels of difficulty (1-5). The level 5 ai is the best player, and will always play the best move possble. The level 4 ai is the second best, and will always play the second best move possible, and so on untill level 1.
 The choose_move predicate will start by finding the best possible move for the given Player, in the current GameState (board). If the ai level is 5, it stores the chosen move to be returned, if it is of a lower level, it will delete the best move from the list of possible moves, and find the best move in the new list, guaranteeing that the move chosen by a lower level ai is always worse. This last process will repeat itself Level-4 number of times.
 
