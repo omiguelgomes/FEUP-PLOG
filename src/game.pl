@@ -178,15 +178,12 @@ valid_moves(GameState, Player, ListofMoves, TempMoves, X, Y) :- (X \= 0 ; Y \= 0
 
 endGame(GameState, 'W') :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 < ScorePlayer2, !,
                       format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
-                      
-                      write('White won!\n').
+                      write('White won!\n'),nl.
 
 endGame(GameState, 'B') :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 > ScorePlayer2, !,
                       format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
-                     
-                      write('Black won!\n').
+                      write('Black won!\n'),nl.
 
 endGame(GameState, ' ') :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 =:= ScorePlayer2,
                       format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
-                   
-                      write('Game ended in a tie!\n').
+                      write('Game ended in a tie!\n'),nl.
