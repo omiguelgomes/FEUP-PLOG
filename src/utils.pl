@@ -1,3 +1,5 @@
+:- dynamic bonus/1.
+
 getCell(X, Y, GameState, Value) :- X > -1, Y > -1, X < 10, Y < 10, getRow(Y, GameState, Row), getCellInRow(X, Row, Value).
 
 getRow(0, [H|_], H).
@@ -22,9 +24,24 @@ convertX('i', 8).
 convertX('j', 9).
 
 /*Position of the bonuses*/
-bonus([3-1, 5-1, 8-2, 2-4, 1-6, 7-6, 3-8, 6-8]).
+bonus([]).
 
-getBonus(GameState, Player, BonusScore) :- bonus(BonusList), getBonus(GameState, Player, BonusList, BonusScore, 0).
+/*fill bonus with the actual bonus list*/
+instantiateBonusList(GameState) :- findBonus(GameState, 1, 1, BonusList, []), retract(bonus(List)), assert(bonus(BonusList)).
+
+findBonus(_, 0, 0, BonusList, BonusList).
+findBonus(GameState, X, Y, BonusList, Temp) :- getCell(X, Y, GameState, 'P'), !, 
+                                               append(Temp, [X-Y], NewTemp),
+                                               nextCell(X, Y, NewX, NewY), 
+                                               findBonus(GameState, NewX, NewY, BonusList, NewTemp).
+
+findBonus(GameState, X, Y, BonusList, Temp) :- getCell(X, Y, GameState, _), !, 
+                                               nextCell(X, Y, NewX, NewY), 
+                                               findBonus(GameState, NewX, NewY, BonusList, Temp).
+
+
+/*get bonus score for player*/
+getBonus(GameState, Player, BonusScore) :- bonus(BonusList), getBonus(GameState, Player, BonusList, BonusScore, 0), write(BonusScore), nl.
 
 getBonus(GameState, Player, [X-Y|T], BonusScore, Temp) :- getCell(X, Y, GameState, Player), 
                                                           NewTemp is Temp + 3,

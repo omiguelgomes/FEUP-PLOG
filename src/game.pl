@@ -1,8 +1,8 @@
 :- use_module(library(system)).
 /*first startGame, calls game main loop*/
-startGame :-                             initial(GameState), display_game(GameState, 'B'), gameLoop(GameState, 'B').
-startGamePvsC(Level) :-                  initial(GameState), display_game(GameState, 'B'), gameLoopPvsC(GameState, 'B', Level).
-startGameCvsC(LevelBlack, LevelWhite) :- initial(GameState), display_game(GameState, 'B'), gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'B').
+startGame :-                             initial(GameState), instantiateBonusList(GameState), display_game(GameState, 'B'), gameLoop(GameState, 'B').
+startGamePvsC(Level) :-                  initial(GameState), instantiateBonusList(GameState), display_game(GameState, 'B'), gameLoopPvsC(GameState, 'B', Level).
+startGameCvsC(LevelBlack, LevelWhite) :- initial(GameState), instantiateBonusList(GameState), display_game(GameState, 'B'), gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'B').
 
 
 /*PvP Main loop*/
