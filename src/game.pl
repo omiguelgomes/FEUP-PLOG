@@ -37,7 +37,7 @@ gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'B') :- !, \+game_over(GameState
                                                            choose_move(GameState, 'B', LevelBlack, X1-Y1), !,
                                                            convertX(X1Converted, X1),
                                                            format('Black is going to play ~s, ~d\n', [X1Converted, Y1]),
-                                                           /*sleep(2),*/
+                                                           sleep(2),
                                                            move(GameState, 'B', [X1, Y1], NewGameState),
                                                            display_game(NewGameState, 'B'),
                                                            gameLoopCvsC(NewGameState, LevelBlack, LevelWhite, 'W').
@@ -46,7 +46,7 @@ gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'W') :- !, \+game_over(GameState
                                                            choose_move(GameState, 'W', LevelWhite, X1-Y1), !,
                                                            convertX(X1Converted, X1),
                                                            format('White is going to play ~s, ~d\n', [X1Converted, Y1]),
-                                                           /*sleep(2),*/
+                                                           sleep(2),
                                                            move(GameState, 'W', [X1, Y1], NewGameState),
                                                            display_game(NewGameState, 'W'),
                                                            gameLoopCvsC(NewGameState, LevelBlack, LevelWhite, 'B').

@@ -14,7 +14,7 @@ choose_move(GameState, Player, Level, ListOfMoves, X-Y) :- getBestMove(GameState
                                                             choose_move(GameState, Player, Level1, NewListOfMoves, X-Y).
                                                                       
 
-getBestMove(GameState, Player, [X-Y|T], BestMove, _, BestMoveValue) :-   placePiece(GameState, Player, X, Y, NewGameState),                                                                                     
+getBestMove(GameState, Player, [X-Y|T], BestMove, _, BestMoveValue) :-   move(GameState, Player, [X, Y], NewGameState),                                                                                     
                                                                                     value(NewGameState, Player, Score),
                                                                                     Score >= BestMoveValue, 
                                                                                     getBestMove(GameState, Player, T, BestMove, X-Y, Score).
