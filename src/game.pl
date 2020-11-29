@@ -1,60 +1,61 @@
 :- use_module(library(system)).
 /*first startGame, calls game main loop*/
-startGame :- initial(GameState), gameLoop(GameState, 'B').
-startGamePvsC(Level) :- initial(GameState), gameLoopPvsC(GameState, 'B', Level).
-startGameCvsC(LevelBlack, LevelWhite) :- initial(GameState), gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'B').
+startGame :-                             initial(GameState), display_game(GameState, 'B'), gameLoop(GameState, 'B').
+startGamePvsC(Level) :-                  initial(GameState), display_game(GameState, 'B'), gameLoopPvsC(GameState, 'B', Level).
+startGameCvsC(LevelBlack, LevelWhite) :- initial(GameState), display_game(GameState, 'B'), gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'B').
 
 
 /*PvP Main loop*/
 gameLoop(GameState, Player) :- \+game_over(GameState, Player),
-                                display_game(GameState, Player),
-                                move(GameState, Player, [X,Y]),
-                                placePiece(GameState, Player, X, Y, NewGameState),
-                                flipPieces(NewGameState, Player, X, Y, UltraNewGameState, TrueFinal),
+                                getMove(GameState, Player, [X, Y]),
+                                move(GameState, Player, [X,Y], NewGameState),
                                 getOpponent(Player, Opponent),
-                                gameLoop(TrueFinal, Opponent).
+                                display_game(NewGameState, Opponent),
+                                gameLoop(NewGameState, Opponent).
 
 gameLoop(_, _).
 
 /*PvC Main loop*/
 gameLoopPvsC(GameState, Player, Level) :- \+game_over(GameState, Player),
-                                          display_game(GameState, Player),
-                                          move(GameState, Player, [X,Y]),
-                                          placePiece(GameState, Player, X, Y, NewGameState),
+                                          getMove(GameState, Player, [X, Y]),
+                                          move(GameState, Player, [X,Y], NewGameState),
+                                          display_game(NewGameState, Player),
                                           \+game_over(GameState, Opponent),
                                           getOpponent(Player, Opponent),
                                           choose_move(NewGameState, Opponent, Level, X1-Y1),
                                           convertX(X1Converted, X1),
-                                          format('I\'m going to play ~s, ~d', [X1Converted, Y1]),
+                                          format('I\'m going to play ~s, ~d\n', [X1Converted, Y1]),
                                           sleep(2),
-                                          placePiece(NewGameState, Opponent, X1, Y1, NewNewGameState),
+                                          move(NewGameState, Opponent, [X1, Y1], NewNewGameState),
+                                          display_game(NewNewGameState, Player),
                                           gameLoopPvsC(NewNewGameState, Player, Level).
 
 gameLoopPvsC(_, _).
 
 /*CvC Main loop*/
 gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'B') :- !, \+game_over(GameState, 'B'),
-                                                           display_game(GameState, 'B'),
-                                                           choose_move(GameState, 'B', LevelBlack, X1-Y1),
+                                                           choose_move(GameState, 'B', LevelBlack, X1-Y1), !,
                                                            convertX(X1Converted, X1),
                                                            format('Black is going to play ~s, ~d\n', [X1Converted, Y1]),
-                                                           sleep(2),
-                                                           placePiece(GameState, 'B', X1, Y1, NewGameState),
+                                                           /*sleep(2),*/
+                                                           move(GameState, 'B', [X1, Y1], NewGameState),
+                                                           display_game(NewGameState, 'B'),
                                                            gameLoopCvsC(NewGameState, LevelBlack, LevelWhite, 'W').
 
 gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'W') :- !, \+game_over(GameState, 'W'),
-                                                           display_game(GameState, 'W'),
-                                                           choose_move(GameState, 'W', LevelWhite, X1-Y1),
+                                                           choose_move(GameState, 'W', LevelWhite, X1-Y1), !,
                                                            convertX(X1Converted, X1),
                                                            format('White is going to play ~s, ~d\n', [X1Converted, Y1]),
-                                                           sleep(2),
-                                                           placePiece(GameState, 'W', X1, Y1, NewGameState),
+                                                           /*sleep(2),*/
+                                                           move(GameState, 'W', [X1, Y1], NewGameState),
+                                                           display_game(NewGameState, 'W'),
                                                            gameLoopCvsC(NewGameState, LevelBlack, LevelWhite, 'B').
 
 gameLoopCvsC(_, _, _).                                                    
 
 /*If current player doesnt have any legal moves, switch to the next.*/
-move(GameState, Player, [X, Y]) :- canMove(GameState, Player), getMove(GameState, Player, [X, Y]).
+move(GameState, Player, [X, Y], GameStateAfterMove) :- canMove(GameState, Player), placePiece(GameState, Player, X, Y, NewGameState),
+                                                    flipPieces(NewGameState, Player, X, Y, _, GameStateAfterMove).
 
 move(GameState, Player, [X, Y]) :- format('\n ~s has no possible moves!\n', [Player]),
                                    getOpponent(Player, Opponent),
@@ -98,7 +99,10 @@ flipPieces(GameState, Player, X, Y, UltraNewGameState, DiagonalFinal2):-
 /*Check if move is legal.*/
 validateMove(GameState, Player, X, Y) :- X < 10, X > 0, Y < 10, Y > 0,
                                          getCell(X, Y, GameState, Value), Value == ' ',
-                                         hasOpponentPieceAdjacent(GameState, Player, X, Y).                                         
+                                         hasOpponentPieceAdjacent(GameState, Player, X, Y),
+                                         flipPieces(GameState, Player, X, Y, _, GameStateAfterMove),
+                                         GameState \== GameStateAfterMove.
+                                         
 
 /*Places piece in position X, Y*/
 placePiece([H|T], Player, X, 0, [H2|T]) :- placePiece(H, Player, X, -1, H2).
