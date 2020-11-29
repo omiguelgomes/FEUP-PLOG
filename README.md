@@ -129,6 +129,7 @@ getMove(GameState, Player, [X, Y]) :- format('~s to play.', [Player]), nl,
                                       write('Where would you like to play?'), nl,
                                       write('X: '), read(Temp),
                                       write('Y: '), read(Y),
+                                      nonvar(Temp),
                                       convertX(Temp, X), 
                                       validateMove(GameState, Player, X, Y).
 
