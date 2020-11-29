@@ -17,7 +17,18 @@ Mapello is a board game based on Reversi designed by Simon M. Lucas. The objecti
 
 Full set of rules on https://nestorgames.com/#mapello_detail
 
-### Add game rules, full text
+## Rules
+The game is played with 2 players which alternate turns in order to eat oponent pieces in order to have the highest score at the end of the game (when no more moves are valid).
+
+Black plays first.
+
+To be a valid move, a piece must be placed adjacent to an opponent's piece and flip at least 1 piece. Flipping happens when you catch one or more oponent pieces between the newly placed piece and another player piece (or joker) in a horizontal, vertical or diagonal direction. To be noted that all directions are checked and all pieces caught between (even if in different directions) will be flipped. If a player has no valid moves, they skip their turn.
+
+If a player puts a piece in a blue bonus disc (P in our program) they will take 3 extra points.
+If a 
+
+The game is over when there are no more valid moves for either player - the score is compared and a winner is called.
+
 
 ## Game Logic
 The board is represented as a list of lists. Each list representing a row, and containing 10 elements, one for each cell.
