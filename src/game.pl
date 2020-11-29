@@ -10,8 +10,9 @@ gameLoop(GameState, Player) :- \+game_over(GameState, Player),
                                 display_game(GameState, Player),
                                 move(GameState, Player, [X,Y]),
                                 placePiece(GameState, Player, X, Y, NewGameState),
+                                flipPieces(NewGameState, Player, X, Y, UltraNewGameState, TrueFinal),
                                 getOpponent(Player, Opponent),
-                                gameLoop(NewGameState, Opponent).
+                                gameLoop(TrueFinal, Opponent).
 
 gameLoop(_, _).
 
@@ -73,7 +74,25 @@ getMove(GameState, Player, [X, Y]) :- write('Invalid position, choose another on
 
 
 /*Flip all pieces after the players move*/
-flipPieces(GameState, Player, X, Y).
+flipPieces(GameState, Player, X, Y, UltraNewGameState, DiagonalFinal2):-
+    /*checkar linha*/
+    getRow(Y, GameState, Row),
+    /*checkar row*/
+    checkRowRight(GameState, Player, X, Y, Row, [], RowList1),
+    checkRowLeft(GameState, Player, X, Y, Row, [], RowList2),
+    append(RowList1, RowList2, RowList),
+    /*checkar coluna*/
+    checkColumnDown(GameState, Player, X, Y, [], ColumnList1),
+    checkColumnUp(GameState, Player, X, Y, [], ColumnList2),
+    append(ColumnList1, ColumnList2, ColumnList),
+    /*checkar diagonal TODO*/
+    checkDiagonalPos(GameState, Player, X, Y, [], [], DiagonalListX1, DiagonalListY1),
+    checkDiagonalNeg(GameState, Player, X, Y, [], [], DiagonalListX2, DiagonalListY2),
+    /*Flipar tudo*/
+    flipListRow(Player,GameState, RowList, Y, NewRowGameState, RowFinal),
+    flipListColumn(Player, RowFinal, X, ColumnList, NewColumnGameState, ColumnFinal),
+    flipListDiagonal(Player, ColumnFinal, DiagonalListX1, DiagonalListY1, NewDiagonalGameState, DiagonalFinal1),
+    flipListDiagonal(Player, DiagonalFinal1, DiagonalListX2, DiagonalListY2, NewDiagonalGameState2, DiagonalFinal2).
 
 
 /*Check if move is legal.*/

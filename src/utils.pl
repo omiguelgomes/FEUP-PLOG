@@ -29,3 +29,126 @@ nextCell(8, 8, 0, 0).
 /*If we reached the last cell in the row, move to next row*/
 nextCell(8, Y, 1, NextY) :-  NextY is Y + 1.
 nextCell(X, Y, NextX, Y) :-  NextX is X + 1.
+
+/*Used to flip necessary pieces*/
+flipListRow(Player,GameState, [], Y, GameState, GameState).
+
+flipListRow(Player,GameState, [H|Rest], Y, NewGameState, Final):-
+    placePiece(GameState, Player, H, Y, NewGameState),
+    flipListRow(Player, NewGameState, Rest, Y, _, Final).
+
+flipListColumn(Player,GameState, X, [], GameState, GameState).
+
+flipListColumn(Player,GameState, X, [H|Rest], NewGameState, Final):-
+    placePiece(GameState, Player, X, H, NewGameState),
+    flipListColumn(Player, NewGameState, X, Rest, _, Final).
+
+flipListDiagonal(Player,GameState, [], [], GameState, GameState).
+
+flipListDiagonal(Player,GameState, [X|Rest1], [Y|Rest2], NewGameState, Final):-
+    placePiece(GameState, Player, X, Y, NewGameState),
+    flipListDiagonal(Player, NewGameState, Rest1, Rest2, _, Final).
+
+ 
+ /*Used to check if there are flipable pieces, returns in FinalList.*/
+checkRowRight(GameState, Player, 9, Y, Row, TempList, TempList).
+
+checkRowRight(GameState, Player, X, Y, Row, TempList, FinalList):-
+    NewX is X+1,
+    getCellInRow(NewX, Row, Value),
+    (       /* Free space, can end*/ 
+            Value == ' ' -> checkRowRight(GameState, Player, 9, Y, Row, [],FinalList)
+        ;    /* Wall piece, can end */
+            Value == '#' -> checkRowRight(GameState, Player, 9, Y, Row, [],FinalList) 
+        ;   /* Player piece, flip current list, dont add */
+            Value == Player -> checkRowRight(Final, Player, 9, Y, Row, TempList, FinalList)    
+        ;   /* otherwise (oponent piece append to fliplist) -> */
+            append(TempList, [NewX], NewTempList),
+            checkRowRight(GameState, Player, NewX, Y, Row, NewTempList, FinalList)
+    ).
+
+checkRowLeft(GameState, Player, 0, Y, Row, TempList, TempList).
+
+checkRowLeft(GameState, Player, X, Y, Row, TempList, FinalList):-
+    NewX is X-1,
+    getCellInRow(NewX, Row, Value),
+    (       /* Free space, can end*/ 
+            Value == ' ' -> checkRowLeft(GameState, Player, 0, Y, Row, [],FinalList)
+        ;    /* Wall piece, can end */
+            Value == '#' -> checkRowLeft(GameState, Player, 0, Y, Row, [],FinalList) 
+        ;   /* Player piece, flip current list, dont add */
+            Value == Player ->  checkRowLeft(Final, Player, 0, Y, Row, TempList, FinalList)    
+        ;   /* otherwise (oponent piece append to fliplist) -> */
+            append(TempList, [NewX], NewTempList),
+            checkRowLeft(GameState, Player, NewX, Y, Row, NewTempList, FinalList)
+        ).    
+
+checkColumnDown(GameState, Player, X, 9, TempList, TempList).
+
+checkColumnDown(GameState, Player, X, Y, TempList, FinalList):-
+    NewY is Y+1,
+    getCell(X, NewY, GameState, Value),
+    (       /* Free space, can end*/ 
+            Value == ' ' -> checkColumnDown(GameState, Player, X, 9, [], FinalList)
+        ;    /* Wall piece, can end */
+            Value == '#' -> checkColumnDown(GameState, Player, X, 9, [], FinalList) 
+        ;   /* Player piece, flip current list, dont add */
+            Value == Player -> checkColumnDown(Final, Player, X, 9, TempList, FinalList)    
+        ;   /* otherwise (oponent piece append to fliplist) -> */
+            append(TempList, [NewY], NewTempList),
+            checkColumnDown(GameState, Player, X, NewY, NewTempList, FinalList)
+    ).
+
+checkColumnUp(GameState, Player, X, 0, TempList, TempList).
+
+checkColumnUp(GameState, Player, X, Y, TempList, FinalList):-
+    NewY is Y-1,
+    getCell(X, NewY, GameState, Value),
+    (       /* Free space, can end*/ 
+            Value == ' ' -> checkColumnUp(GameState, Player, X, 0, [],FinalList)
+        ;    /* Wall piece, can end */
+            Value == '#' -> checkColumnUp(GameState, Player, X, 0, [],FinalList) 
+        ;   /* Player piece, flip current list, dont add */
+            Value == Player -> checkColumnUp(Final, Player, X, 0, TempList, FinalList)    
+        ;   /* otherwise (oponent piece append to fliplist) -> */
+            append(TempList, [NewY], NewTempList),
+            checkColumnUp(GameState, Player, X, NewY, NewTempList, FinalList)
+    ).
+
+checkDiagonalPos(GameState, Player, X, 0, TempListX, TempListY, TempListX, TempListY).
+checkDiagonalPos(GameState, Player, 9, Y, TempListX, TempListY, TempListX, TempListY).
+
+checkDiagonalPos(GameState, Player, X, Y, TempListX, TempListY, FinalListX, FinalListY):-
+    NewY is Y-1,
+    NewX is X+1,
+    getCell(NewX, NewY, GameState, Value),
+    (       /* Free space, can end*/ 
+            Value == ' ' -> checkDiagonalPos(GameState, Player, X, 0, [], [], FinalListX, FinalListY)
+        ;    /* Wall piece, can end */
+            Value == '#' -> checkDiagonalPos(GameState, Player, X, 0, [], [], FinalListX, FinalListY) 
+        ;   /* Player piece, flip current list, dont add */
+            Value == Player -> checkDiagonalPos(Final, Player, X, 0, TempListX, TempListY, FinalListX, FinalListY)    
+        ;   /* otherwise (oponent piece append to fliplist) -> */
+            append(TempListX, [NewX], NewTempListX),
+            append(TempListY, [NewY], NewTempListY),
+            checkDiagonalPos(GameState, Player, NewX, NewY, NewTempListX, NewTempListY, FinalListX, FinalListY)
+    ).
+
+checkDiagonalNeg(GameState, Player, X, 9, TempListX, TempListY, TempListX, TempListY).
+checkDiagonalNeg(GameState, Player, 0, Y, TempListX, TempListY, TempListX, TempListY).
+
+checkDiagonalNeg(GameState, Player, X, Y, TempListX, TempListY, FinalListX, FinalListY):-
+    NewY is Y+1,
+    NewX is X-1,
+    getCell(NewX, NewY, GameState, Value),
+    (       /* Free space, can end*/ 
+            Value == ' ' -> checkDiagonalNeg(GameState, Player, X, 9, [], [], FinalListX, FinalListY)
+        ;    /* Wall piece, can end */
+            Value == '#' -> checkDiagonalNeg(GameState, Player, X, 9, [], [], FinalListX, FinalListY) 
+        ;   /* Player piece, flip current list, dont add */
+            Value == Player -> checkDiagonalNeg(Final, Player, X, 9, TempListX, TempListY, FinalListX, FinalListY)    
+        ;   /* otherwise (oponent piece append to fliplist) -> */
+            append(TempListX, [NewX], NewTempListX),
+            append(TempListY, [NewY], NewTempListY),
+            checkDiagonalNeg(GameState, Player, NewX, NewY, NewTempListX, NewTempListY, FinalListX, FinalListY)
+    ).
