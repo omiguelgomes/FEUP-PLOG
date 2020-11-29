@@ -144,40 +144,40 @@ checkColumnUp(GameState, Player, X, Y, TempList, FinalList):-
             checkColumnUp(GameState, Player, X, NewY, NewTempList, FinalList)
     ).
 
-checkDiagonalPos(GameState, Player, X, 0, TempListX, TempListY, TempListX, TempListY).
-checkDiagonalPos(GameState, Player, 9, Y, TempListX, TempListY, TempListX, TempListY).
+checkDiagonalPos1(GameState, Player, X, 0, TempListX, TempListY, TempListX, TempListY).
+checkDiagonalPos1(GameState, Player, 9, Y, TempListX, TempListY, TempListX, TempListY).
 
-checkDiagonalPos(GameState, Player, X, Y, TempListX, TempListY, FinalListX, FinalListY):-
+checkDiagonalPos1(GameState, Player, X, Y, TempListX, TempListY, FinalListX, FinalListY):-
     NewY is Y-1,
     NewX is X+1,
     getCell(NewX, NewY, GameState, Value),
     (       /* Free space, can end*/ 
-            Value == ' ' -> checkDiagonalPos(GameState, Player, X, 0, [], [], FinalListX, FinalListY)
+            Value == ' ' -> checkDiagonalPos1(GameState, Player, X, 0, [], [], FinalListX, FinalListY)
         ;    /* Wall piece, can end */
-            Value == '#' -> checkDiagonalPos(GameState, Player, X, 0, [], [], FinalListX, FinalListY) 
+            Value == '#' -> checkDiagonalPos1(GameState, Player, X, 0, [], [], FinalListX, FinalListY) 
         ;   /* Player piece, flip current list, dont add */
-            Value == Player -> checkDiagonalPos(Final, Player, X, 0, TempListX, TempListY, FinalListX, FinalListY)    
+            Value == Player -> checkDiagonalPos1(Final, Player, X, 0, TempListX, TempListY, FinalListX, FinalListY)    
         ;   /* otherwise (oponent piece append to fliplist) -> */
             append(TempListX, [NewX], NewTempListX),
             append(TempListY, [NewY], NewTempListY),
-            checkDiagonalPos(GameState, Player, NewX, NewY, NewTempListX, NewTempListY, FinalListX, FinalListY)
+            checkDiagonalPos1(GameState, Player, NewX, NewY, NewTempListX, NewTempListY, FinalListX, FinalListY)
     ).
 
-checkDiagonalNeg(GameState, Player, X, 9, TempListX, TempListY, TempListX, TempListY).
-checkDiagonalNeg(GameState, Player, 0, Y, TempListX, TempListY, TempListX, TempListY).
+checkDiagonalPos2(GameState, Player, X, 9, TempListX, TempListY, TempListX, TempListY).
+checkDiagonalPos2(GameState, Player, 0, Y, TempListX, TempListY, TempListX, TempListY).
 
-checkDiagonalNeg(GameState, Player, X, Y, TempListX, TempListY, FinalListX, FinalListY):-
+checkDiagonalPos2(GameState, Player, X, Y, TempListX, TempListY, FinalListX, FinalListY):-
     NewY is Y+1,
     NewX is X-1,
     getCell(NewX, NewY, GameState, Value),
     (       /* Free space, can end*/ 
-            Value == ' ' -> checkDiagonalNeg(GameState, Player, X, 9, [], [], FinalListX, FinalListY)
+            Value == ' ' -> checkDiagonalPos2(GameState, Player, X, 9, [], [], FinalListX, FinalListY)
         ;    /* Wall piece, can end */
-            Value == '#' -> checkDiagonalNeg(GameState, Player, X, 9, [], [], FinalListX, FinalListY) 
+            Value == '#' -> checkDiagonalPos2(GameState, Player, X, 9, [], [], FinalListX, FinalListY) 
         ;   /* Player piece, flip current list, dont add */
-            Value == Player -> checkDiagonalNeg(Final, Player, X, 9, TempListX, TempListY, FinalListX, FinalListY)    
+            Value == Player -> checkDiagonalPos2(Final, Player, X, 9, TempListX, TempListY, FinalListX, FinalListY)    
         ;   /* otherwise (oponent piece append to fliplist) -> */
             append(TempListX, [NewX], NewTempListX),
             append(TempListY, [NewY], NewTempListY),
-            checkDiagonalNeg(GameState, Player, NewX, NewY, NewTempListX, NewTempListY, FinalListX, FinalListY)
+            checkDiagonalPos2(GameState, Player, NewX, NewY, NewTempListX, NewTempListY, FinalListX, FinalListY)
     ).

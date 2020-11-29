@@ -87,8 +87,8 @@ flipPieces(GameState, Player, X, Y, UltraNewGameState, DiagonalFinal2):-
     checkColumnUp(GameState, Player, X, Y, [], ColumnList2),
     append(ColumnList1, ColumnList2, ColumnList),
     /*checkar diagonal TODO*/
-    checkDiagonalPos(GameState, Player, X, Y, [], [], DiagonalListX1, DiagonalListY1),
-    checkDiagonalNeg(GameState, Player, X, Y, [], [], DiagonalListX2, DiagonalListY2),
+    checkDiagonalPos1(GameState, Player, X, Y, [], [], DiagonalListX1, DiagonalListY1),
+    checkDiagonalPos2(GameState, Player, X, Y, [], [], DiagonalListX2, DiagonalListY2),
     /*Flipar tudo*/
     flipListRow(Player,GameState, RowList, Y, NewRowGameState, RowFinal),
     flipListColumn(Player, RowFinal, X, ColumnList, NewColumnGameState, ColumnFinal),
