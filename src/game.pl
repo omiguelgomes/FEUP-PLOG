@@ -131,7 +131,7 @@ placePiece([H|T], Player, X, -1, [H|R]) :- X > -1, X1 is X-1, placePiece(T, Play
 
 
 /*Checks if game is over*/
-game_over(GameState, Player, Winner) :- \+canMove(GameState, Player), getOpponent(Player, Opponent), \+canMove(GameState, Opponent), endGame(GameState, Winner).
+game_over(GameState, Player, Winner) :- !, \+canMove(GameState, Player), getOpponent(Player, Opponent),\+canMove(GameState, Opponent),endGame(GameState, Winner).
 
 /*Checks if Player can make a move. Player can make a move if there is a square X, Y where
 an opponent's piece is adjacent(use function below), and must turn at least one of the opponent's piece*/
@@ -177,13 +177,16 @@ valid_moves(GameState, Player, ListofMoves, TempMoves, X, Y) :- (X \= 0 ; Y \= 0
                                                                 valid_moves(GameState, Player, ListofMoves, TempMoves, NewX, NewY).
 
 endGame(GameState, 'W') :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 < ScorePlayer2,
-                           format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
-                           write('White won!\n').
+                      format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
+                      
+                      write('White won!\n').
 
 endGame(GameState, 'B') :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 > ScorePlayer2,
-                           format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
-                           write('Black won!\n').
+                      format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
+                     
+                      write('Black won!\n').
 
 endGame(GameState, ' ') :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 =:= ScorePlayer2,
-                           format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
-                           write('Game ended in a tie!\n').
+                      format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
+                   
+                      write('Game ended in a tie!\n').
