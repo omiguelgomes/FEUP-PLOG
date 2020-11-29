@@ -41,7 +41,7 @@ findBonus(GameState, X, Y, BonusList, Temp) :- getCell(X, Y, GameState, _), !,
 
 
 /*get bonus score for player*/
-getBonus(GameState, Player, BonusScore) :- bonus(BonusList), getBonus(GameState, Player, BonusList, BonusScore, 0), write(BonusScore), nl.
+getBonus(GameState, Player, BonusScore) :- bonus(BonusList), getBonus(GameState, Player, BonusList, BonusScore, 0).
 
 getBonus(GameState, Player, [X-Y|T], BonusScore, Temp) :- getCell(X, Y, GameState, Player), 
                                                           NewTemp is Temp + 3,

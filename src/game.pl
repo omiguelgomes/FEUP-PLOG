@@ -6,7 +6,7 @@ startGameCvsC(LevelBlack, LevelWhite) :- initial(GameState), instantiateBonusLis
 
 
 /*PvP Main loop*/
-gameLoop(GameState, Player) :- \+game_over(GameState, Player),
+gameLoop(GameState, Player) :- \+game_over(GameState, Player, Winner),
                                 getMove(GameState, Player, [X, Y]),
                                 move(GameState, Player, [X,Y], NewGameState),
                                 getOpponent(Player, Opponent),
@@ -16,11 +16,11 @@ gameLoop(GameState, Player) :- \+game_over(GameState, Player),
 gameLoop(_, _).
 
 /*PvC Main loop*/
-gameLoopPvsC(GameState, Player, Level) :- \+game_over(GameState, Player),
+gameLoopPvsC(GameState, Player, Level) :- \+game_over(GameState, Player, Winner),
                                           getMove(GameState, Player, [X, Y]),
                                           move(GameState, Player, [X,Y], NewGameState),
                                           display_game(NewGameState, Player),
-                                          \+game_over(GameState, Opponent),
+                                          \+game_over(GameState, Opponent, Winner),
                                           getOpponent(Player, Opponent),
                                           choose_move(NewGameState, Opponent, Level, X1-Y1),
                                           convertX(X1Converted, X1),
@@ -33,7 +33,7 @@ gameLoopPvsC(GameState, Player, Level) :- \+game_over(GameState, Player),
 gameLoopPvsC(_, _).
 
 /*CvC Main loop*/
-gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'B') :- !, \+game_over(GameState, 'B'),
+gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'B') :- !, \+game_over(GameState, 'B', Winner),
                                                            choose_move(GameState, 'B', LevelBlack, X1-Y1), !,
                                                            convertX(X1Converted, X1),
                                                            format('Black is going to play ~s, ~d\n', [X1Converted, Y1]),
@@ -42,7 +42,7 @@ gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'B') :- !, \+game_over(GameState
                                                            display_game(NewGameState, 'B'),
                                                            gameLoopCvsC(NewGameState, LevelBlack, LevelWhite, 'W').
 
-gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'W') :- !, \+game_over(GameState, 'W'),
+gameLoopCvsC(GameState, LevelBlack, LevelWhite, 'W') :- !, \+game_over(GameState, 'W', Winner),
                                                            choose_move(GameState, 'W', LevelWhite, X1-Y1), !,
                                                            convertX(X1Converted, X1),
                                                            format('White is going to play ~s, ~d\n', [X1Converted, Y1]),
@@ -113,8 +113,7 @@ placePiece([H|T], Player, X, -1, [H|R]) :- X > -1, X1 is X-1, placePiece(T, Play
 
 
 /*Checks if game is over*/
-/*TODO: RETURN WINER*/
-game_over(GameState, Player) :- !, \+canMove(GameState, Player), getOpponent(Player, Opponent), \+canMove(GameState, Opponent), endGame(GameState).
+game_over(GameState, Player, Winner) :- !, \+canMove(GameState, Player), getOpponent(Player, Opponent), \+canMove(GameState, Opponent), endGame(GameState, Winner).
 
 /*Checks if Player can make a move. Player can make a move if there is a square X, Y where
 an opponent's piece is adjacent(use function below), and must turn at least one of the opponent's piece*/
@@ -159,14 +158,17 @@ valid_moves(GameState, Player, ListofMoves, TempMoves, X, Y) :- (X \= 0 ; Y \= 0
                                                                 nextCell(X, Y, NewX, NewY), !,
                                                                 valid_moves(GameState, Player, ListofMoves, TempMoves, NewX, NewY).
 
-endGame(GameState) :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 < ScorePlayer2,
+endGame(GameState, Winner) :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 < ScorePlayer2,
                       format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
+                      Winner is 'W',
                       write('White won!\n').
 
-endGame(GameState) :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 > ScorePlayer2,
+endGame(GameState, Winner) :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 > ScorePlayer2,
                       format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
+                      Winner is 'B',
                       write('Black won!\n').
 
-endGame(GameState) :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 =:= ScorePlayer2,
+endGame(GameState, Winner) :- getScore(GameState, ScorePlayer1, ScorePlayer2), ScorePlayer1 =:= ScorePlayer2,
                       format('Game Over\nFinal score:  White: ~d  Black: ~d\n', [ScorePlayer2, ScorePlayer1]),
+                      Winner is ' ',
                       write('Game ended in a tie!\n').
