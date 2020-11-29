@@ -182,7 +182,6 @@ The choose_move predicate will start by finding the best possible move for the g
 
 ``` prolog
 choose_move(GameState, Player, Level, X-Y) :- valid_moves(GameState, Player, ListOfMoves), 
-                                              length(ListOfMoves, ListLength), 
                                               choose_move(GameState, Player, Level, ListOfMoves,  X-Y).
 
 choose_move(_, _, _, [X-Y], X-Y).
@@ -207,6 +206,7 @@ getBestMove(_, _, [], BestMove, BestMove, _).
 
 
 ## Conclusions
+This project was concluded with success, and we are proud of the results. It took a lot of effort, but it helped us strengthen our skills in prolog, and we learned a lot during the development. The main issue with our project is that the user can only input the X coordinates using a lower-case letter. This is not ideal, but we were explained that this issue is not easy to solve. If we had the chance to complement this project, we could integrate some features that would make the gameplay more pleasant. We could implement a multi-game mode in which the score from previous games would be saved for each player and allow them to play a best of five, for example. The visual aspect is pleasant, but has some room for improvement, namely in the presentation of the score, and the presentation of some messages like the 'Where would you like to play?' or the 'Invalid position'. The Computer vs Computer mode could also have an option to press any key to see the next move played, but we considered the timer option to be better. Nontheless, having the option to change between the two would be ideal.
 
 ## References
 During the development of this project, we based our research on the SICSTUS official documentation: https://sicstus.sics.se/sicstus/docs/3.7.1/html/sicstus_toc.html

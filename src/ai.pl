@@ -1,8 +1,6 @@
-choose_move(GameState, Player, Level, X-Y) :- valid_moves(GameState, Player, ListOfMoves), length(ListOfMoves, ListLength), 
+choose_move(GameState, Player, Level, X-Y) :- valid_moves(GameState, Player, ListOfMoves),
                                                 choose_move(GameState, Player, Level, ListOfMoves,  X-Y).
 
-
-/*TODO: TROCAR ORDEM, E ADICIONAR CUTS. QUANDO E LOGO NIVEL 1, ESCOLHE SIMPLESMENTE O PRIMEIRO*/
 
 choose_move(_, _, _, [X-Y], X-Y).
 
