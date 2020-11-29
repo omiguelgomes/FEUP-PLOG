@@ -26,8 +26,8 @@ printScore(GameState) :- getScore(GameState, SP1, SP2),
                          format('  Black: ~d\n', [SP1]).
 
 
-
 /*INITIAL BOARD*/
+
 initial([['#', '#', '#', 'J', '#', '#', 'J', '#', '#', '#'], 
          ['#', '#', ' ', 'P', ' ', 'P', ' ', ' ', '#', '#'], 
          ['#', ' ', ' ', ' ', ' ', ' ', '#', ' ', 'P', 'J'], 

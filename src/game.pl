@@ -140,7 +140,8 @@ value(GameState, Player, Score) :- append(GameState, Flattened), getScoreInRow(P
                                           
 getScoreInRow(_, [], 0).
 getScoreInRow(Player, [Player|T], Score) :- !, getScoreInRow(Player, T, ScoreTemp), Score is ScoreTemp + 1.
-getScoreInRow(Player, [_Player|T], Score) :- getScoreInRow(Player, T, Score).
+getScoreInRow(Player, ['P'|T], Score) :- !, getScoreInRow(Player, T, ScoreTemp), Score is ScoreTemp + 4.
+getScoreInRow(Player, [_|T], Score) :- getScoreInRow(Player, T, Score).
 
 /*Returns list of possible moves for Player*/
 valid_moves(GameState, Player, ListofMoves) :- valid_moves(GameState, Player, ListofMoves, [], 1, 1).
