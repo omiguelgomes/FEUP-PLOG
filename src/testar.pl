@@ -1,5 +1,5 @@
 teste:-
-    teste(GameState), 
+    end(GameState), 
     testeGameLoop(GameState, 'B').
 
 /*PvP Main loop*/
