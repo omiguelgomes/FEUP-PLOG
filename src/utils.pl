@@ -92,7 +92,7 @@ checkRowRight(GameState, Player, X, Y, Row, TempList, FinalList):-
         ;   /* Player piece, flip current list, dont add */
             Value == Player -> checkRowRight(Final, Player, 9, Y, Row, TempList, FinalList)    
         ;   /* Player piece, flip current list, dont add */
-            Value == 'J' ->  checkRowLeft(Final, Player, 0, Y, Row, TempList, FinalList)    
+            Value == 'J' ->  checkRowRight(Final, Player, 9, Y, Row, TempList, FinalList)    
         ;   /* otherwise (oponent piece append to fliplist) -> */
             append(TempList, [NewX], NewTempList),
             checkRowRight(GameState, Player, NewX, Y, Row, NewTempList, FinalList)
@@ -128,7 +128,7 @@ checkColumnDown(GameState, Player, X, Y, TempList, FinalList):-
         ;   /* Player piece, flip current list, dont add */
             Value == Player -> checkColumnDown(Final, Player, X, 9, TempList, FinalList)    
         ;   /* Player piece, flip current list, dont add */
-            Value == 'J' -> checkColumnUp(Final, Player, X, 0, TempList, FinalList)    
+            Value == 'J' -> checkColumnDown(Final, Player, X, 9, TempList, FinalList)    
         ;   /* otherwise (oponent piece append to fliplist) -> */
             append(TempList, [NewY], NewTempList),
             checkColumnDown(GameState, Player, X, NewY, NewTempList, FinalList)
@@ -187,7 +187,7 @@ checkDiagonalPos2(GameState, Player, X, Y, TempListX, TempListY, FinalListX, Fin
         ;   /* Player piece, flip current list, dont add */
             Value == Player -> checkDiagonalPos2(Final, Player, X, 9, TempListX, TempListY, FinalListX, FinalListY)    
         ;   /* Player piece, flip current list, dont add */
-            Value == 'J' -> checkDiagonalPos1(Final, Player, X, 9, TempListX, TempListY, FinalListX, FinalListY)    
+            Value == 'J' -> checkDiagonalPos2(Final, Player, X, 9, TempListX, TempListY, FinalListX, FinalListY)    
         ;   /* otherwise (oponent piece append to fliplist) -> */
             append(TempListX, [NewX], NewTempListX),
             append(TempListY, [NewY], NewTempListY),
