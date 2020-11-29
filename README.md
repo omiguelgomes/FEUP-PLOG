@@ -193,6 +193,65 @@ getBonus(GameState, Player, [X-Y|T], BonusScore, Temp) :- getCell(X, Y, GameStat
 getBonus(_, _, [], Bonus, Bonus).
 ```
 
+Another function worth a mention is flipPieces().
+
+``` prolog
+flipPieces(GameState, Player, X, Y, UltraNewGameState, NegDiagonalFinal2):-
+    /*checkar linha*/
+    getRow(Y, GameState, Row),
+    /*checkar row*/
+    checkRowRight(GameState, Player, X, Y, Row, [], RowList1),
+    checkRowLeft(GameState, Player, X, Y, Row, [], RowList2),
+    append(RowList1, RowList2, RowList),
+    /*checkar coluna*/
+    checkColumnDown(GameState, Player, X, Y, [], ColumnList1),
+    checkColumnUp(GameState, Player, X, Y, [], ColumnList2),
+    append(ColumnList1, ColumnList2, ColumnList),
+    /*checkar diagonal TODO*/
+    checkDiagonalPos1(GameState, Player, X, Y, [], [], DiagonalListX1, DiagonalListY1),
+    checkDiagonalPos2(GameState, Player, X, Y, [], [], DiagonalListX2, DiagonalListY2),
+    checkDiagonalNeg1(GameState, Player, X, Y, [], [], NegDiagonalListX1, NegDiagonalListY1),
+    checkDiagonalNeg2(GameState, Player, X, Y, [], [], NegDiagonalListX2, NegDiagonalListY2),
+    /*Flipar tudo*/
+    flipListRow(Player,GameState, RowList, Y, NewRowGameState, RowFinal),
+    flipListColumn(Player, RowFinal, X, ColumnList, NewColumnGameState, ColumnFinal),
+    flipListDiagonal(Player, ColumnFinal, DiagonalListX1, DiagonalListY1, NewDiagonalGameState, DiagonalFinal1),
+    flipListDiagonal(Player, DiagonalFinal1, DiagonalListX2, DiagonalListY2, NewDiagonalGameState2, DiagonalFinal2),
+    flipListDiagonal(Player, DiagonalFinal2, NegDiagonalListX1, NegDiagonalListY1, NewDiagonalGameState3, NegDiagonalFinal1),
+    flipListDiagonal(Player, NegDiagonalFinal1, NegDiagonalListX2, NegDiagonalListY2, NewDiagonalGameState4, NegDiagonalFinal2).
+```    
+This function uses the utility functions checkRow/checkColumn/checkDiagonal to get a list of pieces to flip (if they exist). There are 8 variations for the 8 directions that exist spawning from a piece(up,right,left,down and the 4 diagonals).
+
+Later it calls the flipList functions that pick the previous lists and place a piece in all of those positions. This had to be done at the end or else the newly flipped pieces could create logic conflict in certains asertions.
+
+Below is an example of the utility function checkRowRight (going right from the newly placed piece):
+
+``` prolog
+checkRowRight(GameState, Player, 9, Y, Row, TempList, TempList).
+
+checkRowRight(GameState, Player, X, Y, Row, TempList, FinalList):-
+    NewX is X+1,
+    getCellInRow(NewX, Row, Value),
+    (       /* Free space, can end*/ 
+            Value == ' ' -> checkRowRight(GameState, Player, 9, Y, Row, [],FinalList)
+        ;    /* Wall piece, can end */
+            Value == '#' -> checkRowRight(GameState, Player, 9, Y, Row, [],FinalList) 
+        ;   /* Player piece, flip current list, dont add */
+            Value == Player -> checkRowRight(Final, Player, 9, Y, Row, TempList, FinalList)    
+        ;   /* Player piece, flip current list, dont add */
+            Value == 'J' ->  checkRowRight(Final, Player, 9, Y, Row, TempList, FinalList)    
+        ;   /* otherwise (oponent piece append to fliplist) -> */
+            append(TempList, [NewX], NewTempList),
+            checkRowRight(GameState, Player, NewX, Y, Row, NewTempList, FinalList)
+    ).
+```
+
+This type of functions get the adjacent piece and get their value with getCell(). Depending on the value returned, it either:
+ - ends by returning an empty list (if it finds wall or blank space);
+ - adds the new cell to the list (if it finds the oponent piece, "otherwise" in the function);
+ - Returns the current list (found a player or a joker and therefore we are ready to flip).
+ 
+
 Apart from the PlayervsPlayer mode, we have implemented a PlayervsComputer and a ComputervsComputer mode. In order to obtain a move for the Computer, we have implemented the choose_move/4 predicate. Our ai has 5 different levels of difficulty (1-5). The level 5 ai is the best player, and will always play the best move possble. The level 4 ai is the second best, and will always play the second best move possible, and so on untill level 1.
 The choose_move predicate will start by finding the best possible move for the given Player, in the current GameState (board). If the ai level is 5, it stores the chosen move to be returned, if it is of a lower level, it will delete the best move from the list of possible moves, and find the best move in the new list, guaranteeing that the move chosen by a lower level ai is always worse. This last process will repeat itself Level-4 number of times.
 
