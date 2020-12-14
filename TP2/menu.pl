@@ -1,4 +1,4 @@
-play :- printMainMenu.
+play :- printMainMenu, getInput(Mode), parseMode(Mode).
 
 printMainMenu :- 
     nl,nl,
@@ -35,3 +35,14 @@ printMainMenu :-
     write('|                                                                                      |\n'),
     write('|______________________________________________________________________________________|\n'),
     nl,nl.
+
+
+getInput(Mode) :- write('What mode would you like to execute?'),
+                  read(Mode).
+
+parseMode(1) :- startRandom.
+parseMode(2) :- startCustomSize.
+parseMode(3) :- startCustomSizeDiamonds.
+parseMode(_) :- write('Invalid mode\n').
+
+
