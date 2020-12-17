@@ -1,8 +1,8 @@
-play :- printMainMenu, getInput(Mode), parseMode(Mode).
+play :- printMainMenu, getInput(Mode), parseMode(Mode), !.
 
 printMainMenu :- 
     nl,nl,
-    write(' ______________________________________________________________________________________|\n'),
+    write(' ______________________________________________________________________________________ \n'),
     write('|                                                                                      |\n'),
     write('|                                                                                      |\n'),
     write('|          |||||||   ||||||   |||||   |||    |||   ||||||   |||    ||  |||||||         |\n'),
@@ -36,13 +36,11 @@ printMainMenu :-
     write('|______________________________________________________________________________________|\n'),
     nl,nl.
 
-
+/*TODO: fazer com que input nao rebente quando recebe um ponto (.)*/
 getInput(Mode) :- write('What mode would you like to execute?'),
                   read(Mode).
 
 parseMode(1) :- startRandom.
 parseMode(2) :- startCustomSize.
 parseMode(3) :- startCustomSizeDiamonds.
-parseMode(_) :- write('Invalid mode\n').
-
-
+parseMode(Val) :- (Val > 3 ; Val < 1), write('Invalid mode\n').
