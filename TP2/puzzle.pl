@@ -10,7 +10,7 @@ startCustomSize :- statistics(walltime, [Start,_]),
                    statistics(walltime, [End,_]),
                    Duration is End-Start,
                    format('The program took ~4ds to run\n', [Duration]).
-onsul
+
 startCustomSizeDiamonds :- write('Gonna execute custom size with custom diamonds\n').
 
 
