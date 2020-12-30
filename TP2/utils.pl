@@ -1,5 +1,6 @@
-generateRandomGrid(Height-Width, Diamonds) :- random(1, 10, Height), 
-                                              random(1, 10, Width), 
+/*grids generated always have height>=width*/
+generateRandomGrid(Height-Width, Diamonds) :- random(5, 10, Height), 
+                                              random(5, Height, Width), 
                                               random(1, 10, DiamondNr),
                                               generateDiamondList(Height, Width, DiamondNr, [], Diamonds), !.
 
@@ -12,3 +13,7 @@ generateDiamondList(Height, Width, DiamondNr, Temp, Diamonds) :- random(0, Heigh
 
                                                                  
 generateDiamondList(Height, Width, DiamondNr, Temp, Diamonds) :- generateDiamondList(Height, Width, DiamondNr, Temp, Diamonds).
+
+
+/*known example with solution*/
+example(7-7, [0-0, 0-3, 0-6, 2-3, 4-4, 5-6, 6-0, 6-4, 6-6]).

@@ -3,3 +3,4 @@
 :- consult('utils.pl').
 :- consult('puzzle.pl').
 :- use_module(library(random)).
+:- use_module(library(clpfd)).
