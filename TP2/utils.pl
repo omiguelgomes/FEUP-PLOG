@@ -86,7 +86,7 @@ getCellInRow(X, [_|T], Value) :- X1 is X-1, getCellInRow(X1, T, Value).
 /*known example with solution*/
 example(7-7, [0-0, 3-0, 6-0, 3-2, 4-4, 6-5, 0-6, 4-6, 6-6]).
 
-exampleSmall(9-3, [0-0, 0-3, 0-6]).
+exampleSmall(6-6, [0-0, 0-3, 3-0, 3-3]).
 
 
 /*return max of two as a single element, and not a list*/
