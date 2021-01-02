@@ -71,9 +71,21 @@ makeRow(Board, (X-Y,L), Counter, Square_Char, RowBoard):-
 /*known example with solution*/
 example(7-7, [0-0, 3-0, 6-0, 3-2, 4-4, 6-5, 0-6, 4-6, 6-6]).
 
-exampleSmall(3-3, [0-0]).
+exampleSmall(9-3, [0-0, 0-3, 0-6]).
 
 
-max2([First, Second], First) :- First >= Second.
+/*return max of two as a single element, and not a list*/
+min2([First, Second], First) :- First =< Second.
 
-max2([First, Second], Second) :- First < Second.
+min2([First, Second], Second) :- First > Second.
+
+
+/*maplist with one more argument*/
+maplist5(Pred, Xs, Ys, Zs, Wz) :-
+          	(   foreach(X,Xs),
+          	    foreach(Y,Ys),
+          	    foreach(Z,Zs),
+                foreach(W,Ws),
+          	    param(Pred)
+          	do  call(Pred, X, Y, Z, W)
+          	).

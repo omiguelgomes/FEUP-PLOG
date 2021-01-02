@@ -25,38 +25,41 @@ getSolutions(GridHeight-GridWidth, Diamonds, Squares) :-
     length(Diamonds, NrSquares),
     length(SquaresX, NrSquares),
     length(SquaresY, NrSquares),
-    length(SquaresLength, NrSquares),
+    length(SquaresWidth, NrSquares),
     /*
     max values for the square's parameters 
     */
     MaxSquareX is GridWidth-1,
     MaxSquareY is GridHeight-1,
-    max2([GridHeight, GridWidth], MaxLength),
+    min2([GridHeight, GridWidth], MaxLength),
     /*
     variable domains
     */
 
     domain(SquaresX, 0, MaxSquareX),
     domain(SquaresY, 0, MaxSquareY),
-    domain(SquaresLength, 1, MaxLength),
+    domain(SquaresWidth, 1, MaxLength),
 
-    findall([X-Y, Length], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresLength, Length)), Squares),
-
-    maplist(squareFitsDiamond(GridHeight-GridWidth), Diamonds, Squares),
 
     GridArea is GridHeight*GridWidth,
-    sum_areas(Squares, GridArea),
-    no_overlap(Squares),
+    sum_areas(SquaresWidth, GridArea),
+    no_overlap(SquaresX, SquaresY, SquaresWidth),
+
+    maplist5(squareFitsDiamond(GridHeight-GridWidth), Diamonds, SquaresX, SquaresY, SquaresWidth),
     
     labeling([], SquaresX),
     labeling([], SquaresY),
-    labeling([], SquaresLength),
-    write(Squares).
+    labeling([], SquaresWidth),
+
+    /*findall([X-Y, Width], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresWidth, Width)), Squares),*/
+
+    write(SquaresX), nl,
+    write(SquaresY), nl,
+    write(SquaresWidth), nl.
 
 
 /*SquareX and SquareY are the coords for the square's top left corner*/
-/*getSquareForDiamond(3-3, 2-2, [SquareX-SquareY, SquareWidth]).*/
-squareFitsDiamond(GridHeight-GridWidth, DiamondX-DiamondY, [SquareX-SquareY, SquareWidth]) :- 
+squareFitsDiamond(GridHeight-GridWidth, DiamondX-DiamondY, SquareX, SquareY, SquareWidth) :- 
 
     /*square is inside the grid limits*/
     SquareX + SquareWidth #=< GridWidth,
@@ -73,23 +76,24 @@ sum_areas(Squares, GridArea) :- sum_areas(Squares, GridArea, 0).
 
 sum_areas([], Area, Area).
 
-sum_areas([[SquareX-SquareY, SquareWidth]|Rest], GridArea, Temp) :- Area #= SquareWidth*SquareWidth,
+sum_areas([SquareWidth|Rest], GridArea, Temp) :- Area #= SquareWidth*SquareWidth,
                                                                     NewTemp #= Temp + Area,
                                                                     sum_areas(Rest, GridArea, NewTemp).
 
-no_overlap(List) :- length(List, 1).
 
-no_overlap([Square|Tail]) :- \+overlaps_any(Square, Tail), no_overlap(Tail).
+ no_overlap(SquaresX, _, _) :- length(SquaresX, 1).
 
-/*true if first argument overlaps any of the squares in the second argument*/
-overlaps_any(Square1, Rest) :- member(Square2, Rest), overlaps(Square1, Square2).
+ no_overlap([SquareX|TailX], [SquareY|TailY], [SquareWidth|TailWidth]) :- \+overlaps_any(SquareX, SquareY, SquareWidth, TailX, TailY, TailWidth), no_overlap(TailX, TailY, TailWidth).
 
+ /*true if first argument overlaps any of the squares in the second argument*/
+ overlaps_any(_, _, _, [], [], []) :- fail.
+ overlaps_any(SquareX, SquareY, SquareWidth, [Square2X|RestX], [Square2Y|RestY], [Square2Width|RestWidth]) :- overlaps(SquareX, SquareY, SquareWidth, Square2X, Square2Y, Square2Width).
+
+ overlaps_any(SquareX, SquareY, SquareWidth, [Square2X|RestX], [Square2Y|RestY], [Square2Width|RestWidth]) :- \+overlaps(SquareX, SquareY, SquareWidth, Square2X, Square2Y, Square2Width),
+                                                                                                                 overlaps_any(Square2X, Square2Y, Square2Width, RestX, RestY, RestWidth).
+
+*/
 /*true if first square overlaps second*/
-overlaps([X1-Y1, Length1], [X2-Y2, Length2]) :- X1+Length1 #> X2, X2+Length2 #> X1, Y1+Length1 #> Y2, Y2+Length2 #> Y1.
+overlaps(X1, Y1, Length1, X2, Y2, Length2) :- X1+Length1 #> X2, X2+Length2 #> X1, Y1+Length1 #> Y2, Y2+Length2 #> Y1.
 
-
-test :- statistics(walltime, [Start,_]), !,
-                sleep(10),
-                statistics(walltime, [End,_]),
-                Duration is (End - Start)*10,
-                format('The program took ~4d s to run\n', [Duration]).
+/*no_overlap([0,0,0], [0, 2, 6], [3, 3, 3]).*/
