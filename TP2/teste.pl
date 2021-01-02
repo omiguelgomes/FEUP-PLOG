@@ -4,8 +4,9 @@ omega:-
     write('Width: '), write(Width), nl,  
     write(Diamonds),nl,
     fillDiamonds(Board, Diamonds, NewBoard, Final), */
-    printBoard(Board, 0),
+    placeChar(Board, '#', 1, 1, NewBoard),
+    printBoard(NewBoard, 0),
     nl, nl, write('testing starts here'), nl, nl,
-    makeAllSquares(Board, [(0-0,2),(3-3,2), (5-5,4)], 'a', FinalBoard),
+    makeAllSquares(NewBoard, [[0-0,2],[3-3,2], [5-5,4]], 'a', FinalBoard),
     printBoard(FinalBoard, 0).
 
