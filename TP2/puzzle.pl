@@ -6,22 +6,18 @@ startRandom :- generateRandomGrid(Height-Width, Diamonds),
                makeAllSquares(Board, Squares, 'a', FinalBoard).
 
 
-startCustomSize :- example(Height-Width, Diamonds), 
+startCustomSize :- example3(Height-Width, Diamonds), 
                    generateBoard(Height, Width, Board),
                    fillDiamonds(Board, Diamonds, Aux, NewBoard),
                    displayGame(Height, Width, Diamonds, NewBoard), !,
-                   getSolutions(Height-Width, Diamonds, Squares),
-                   makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
-                   displayGame(Height, Width, Diamonds, FinalBoard).
+                   getSolutions(Height-Width, Diamonds, Squares).
+                   /*makeAllSquares(NewBoard, Squares, 'a', FinalBoard)*/
+                   /*displayGame(Height, Width, Diamonds, FinalBoard).*/
                    
 
 startCustomSizeDiamonds :- write('Gonna execute custom size with custom diamonds\n').
 
 
-/*all_distinct(Squares)*/
-/*HeadDiamond, TailDiamond, HeadSquare, TailSquare*/
-/*    getSquareForDiamond(GridHeight-GridWidth, DiamondX-DiamondY, [SquareX-SquareY, SquareWidth]),*/
-/*format('Found a square at x:~d, y:~d with ~d width\n', [SquareX, SquareY, SquareWidth]).*/
 
 getSolutions(GridHeight-GridWidth, Diamonds, Squares) :- 
     /*generate lists for the solutions*/
@@ -30,33 +26,33 @@ getSolutions(GridHeight-GridWidth, Diamonds, Squares) :-
     length(SquaresY, NrSquares),
     length(SquaresWidth, NrSquares),
     /*
-    max values for the square's parameters 
+        max values for the square's parameters 
     */
     MaxSquareX is GridWidth-1,
     MaxSquareY is GridHeight-1,
     min2([GridHeight, GridWidth], MaxLength),
     /*
-    variable domains
+        variable domains
     */ 
     domain(SquaresX, 0, MaxSquareX),
     domain(SquaresY, 0, MaxSquareY),
     domain(SquaresWidth, 1, MaxLength),
 
+    /*
+        variable constraints
+    */
     getRectangles(SquaresX, SquaresY, SquaresWidth, Rectangles),
-    
     GridArea is GridHeight*GridWidth,
-    /*no_overlap(SquaresX, SquaresY, SquaresWidth),*/
     sum_areas(SquaresWidth, GridArea),
-
     maplist5(squareFitsDiamond(GridHeight-GridWidth), Diamonds, SquaresX, SquaresY, SquaresWidth),
-
-    
-    labeling([], SquaresWidth),
     disjoint2(Rectangles, []),
+    
+    labeling([down], SquaresWidth),
     labeling([], SquaresX),
     labeling([], SquaresY),
 
-    findall([X-Y, Width], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresWidth, Width)), Squares).
+    findall([X-Y, Width], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresWidth, Width)), Squares),
+    write(Squares).
 
 /*SquareX and SquareY are the coords for the square's top left corner*/
 squareFitsDiamond(GridHeight-GridWidth, DiamondX-DiamondY, SquareX, SquareY, SquareWidth) :- 
