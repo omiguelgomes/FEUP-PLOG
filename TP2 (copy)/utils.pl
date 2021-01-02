@@ -39,9 +39,4 @@ fillDiamonds(Board, [X-Y|Rest], NewBoard, FinalBoard):-
 /*known example with solution*/
 example(7-7, [0-0, 3-0, 6-0, 3-2, 4-4, 6-5, 0-6, 4-6, 6-6]).
 
-exampleSmall(3-3, [0-0]).
-
-
-max2([First, Second], First) :- First >= Second.
-
-max2([First, Second], Second) :- First < Second.
+exampleSmall(24-3, [0-0, 0-3, 0-6, 0-9, 0-12, 0-15, 0-18, 0-21]).
