@@ -6,6 +6,6 @@ omega:-
     fillDiamonds(Board, Diamonds, NewBoard, Final), */
     printBoard(Board, 0),
     nl, nl, write('testing starts here'), nl, nl,
-    makeAllSquares(Board, [(0-0,2),(3-3,2), (5-5,4)], '1', FinalBoard),
+    makeAllSquares(Board, [(0-0,2),(3-3,2), (5-5,4)], 'a', FinalBoard),
     printBoard(FinalBoard, 0).
 

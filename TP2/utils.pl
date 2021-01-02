@@ -38,7 +38,10 @@ makeAllSquares(Board, [], New_True_Char, Board).
 
 makeAllSquares(Board, [(X-Y,L)|Rest], Square_Char, FinalBoard):-
     makeSquares(Board, (X-Y,L), L, Square_Char, SquareBoard),
-    makeAllSquares(SquareBoard, Rest, Square_Char, FinalBoard).
+    char_code(Square_Char, Code),
+    Code1 is Code+1,
+    char_code(New_Char, Code1),
+    makeAllSquares(SquareBoard, Rest, New_Char, FinalBoard).
 
 makeSquares(Board, _, 0, Square_Char, Board).
 
