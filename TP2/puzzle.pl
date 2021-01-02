@@ -36,7 +36,7 @@ startExample :- exampleFluid(Height-Width, Diamonds),
                 fillDiamonds(Board, Diamonds, Aux, NewBoard),
                 displayGame(Height, Width, Diamonds, NewBoard), !,
                 getSolutions(Height-Width, Diamonds, Squares),
-                makeAllSquares(Board, Squares, 'a', FinalBoard),
+                makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
                 displayGame(Height, Width, Diamonds, FinalBoard).
 
 

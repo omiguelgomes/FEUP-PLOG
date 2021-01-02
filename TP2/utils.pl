@@ -36,7 +36,6 @@ fillDiamonds(Board, [X-Y|Rest], NewBoard, FinalBoard):-
     fillDiamonds(NewBoard, Rest, Ultra, FinalBoard).
 
 makeAllSquares(Board, [], New_True_Char, Board).
-
 makeAllSquares(Board, [[X-Y,L]|Rest], Square_Char, FinalBoard):-
     makeSquares(Board, [X-Y,L], L, Square_Char, SquareBoard),
     char_code(Square_Char, Code),
@@ -56,7 +55,9 @@ makeRow(Board, _, 0, Square_Char, Board).
 
 makeRow(Board, [X-Y,L], Counter, Square_Char, RowBoard):-
    /* nl, write('teste3'),
-    nl, write('X: '), write(X), nl, write('Y: '), write(Y), nl, write('L: '), write(L), nl, */
+    nl, write('X: '), write(X), nl, write('Y: '), write(Y), nl, write('L: '), write(L), nl, 
+    nl,write('teste6'),
+    nl,write('Counter: '), write(Counter), */
     New_Counter is Counter - 1,
     New_X is X + 1,
     getCell(X,Y,Board, Value),
@@ -73,7 +74,7 @@ makeRow(Board, [X-Y,L], Counter, Square_Char, RowBoard):-
 
         
 
-getCell(X, Y, GameState, Value) :- X > -1, Y > -1, X < 10, Y < 10, getRow(Y, GameState, Row), getCellInRow(X, Row, Value).
+getCell(X, Y, GameState, Value) :- X > -1, Y > -1, X < 100, Y < 100, getRow(Y, GameState, Row), getCellInRow(X, Row, Value).
 
 getRow(0, [H|_], H).
 getRow(Y, [_|T], Row) :- Y1 is Y-1, getRow(Y1, T, Row).
