@@ -6,7 +6,11 @@ startRandom :- generateRandomGrid(Height-Width, Diamonds),
                makeAllSquares(Board, Squares, 'a', FinalBoard).
 
 
-startCustomSize :- example(Height-Width, Diamonds), 
+startCustomSize :- 
+                   write('Custom Height: '), read(Height),
+                   write('Custom Widtht: '), read(Width),
+                   random(1, 10, DiamondNr),
+                   generateDiamondList(Height, Width, DiamondNr, [], Diamonds),
                    generateBoard(Height, Width, Board),
                    fillDiamonds(Board, Diamonds, Aux, NewBoard),
                    displayGame(Height, Width, Diamonds, NewBoard), !,
@@ -15,7 +19,17 @@ startCustomSize :- example(Height-Width, Diamonds),
                    displayGame(Height, Width, Diamonds, FinalBoard).
                    
 
-startCustomSizeDiamonds :- write('Gonna execute custom size with custom diamonds\n').
+startCustomSizeDiamonds :- 
+                   write('Custom Height: '), read(Height),
+                   write('Custom Widtht: '), read(Width),
+                   write('Custom no. of diamonds: '), read(DiamondNr),
+                   generateDiamondList(Height, Width, DiamondNr, [], Diamonds),
+                   generateBoard(Height, Width, Board),
+                   fillDiamonds(Board, Diamonds, Aux, NewBoard),
+                   displayGame(Height, Width, Diamonds, NewBoard), !,
+                   getSolutions(Height-Width, Diamonds, Squares),
+                   makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
+                   displayGame(Height, Width, Diamonds, FinalBoard).
 
 
 /*all_distinct(Squares)*/
