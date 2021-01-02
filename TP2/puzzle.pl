@@ -6,7 +6,11 @@ startRandom :- generateRandomGrid(Height-Width, Diamonds),
                makeAllSquares(Board, Squares, 'a', FinalBoard).
 
 
-startCustomSize :- example3(Height-Width, Diamonds), 
+startCustomSize :- 
+                   write('Custom Height: '), read(Height),
+                   write('Custom Widtht: '), read(Width),
+                   random(1, 10, DiamondNr),
+                   generateDiamondList(Height, Width, DiamondNr, [], Diamonds),
                    generateBoard(Height, Width, Board),
                    fillDiamonds(Board, Diamonds, Aux, NewBoard),
                    displayGame(Height, Width, Diamonds, NewBoard), !,
@@ -15,8 +19,24 @@ startCustomSize :- example3(Height-Width, Diamonds),
                    /*displayGame(Height, Width, Diamonds, FinalBoard).*/
                    
 
-startCustomSizeDiamonds :- write('Gonna execute custom size with custom diamonds\n').
+startCustomSizeDiamonds :- 
+                   write('Custom Height: '), read(Height),
+                   write('Custom Widtht: '), read(Width),
+                   write('Custom no. of diamonds: '), read(DiamondNr),
+                   generateDiamondList(Height, Width, DiamondNr, [], Diamonds),
+                   generateBoard(Height, Width, Board),
+                   fillDiamonds(Board, Diamonds, Aux, NewBoard),
+                   displayGame(Height, Width, Diamonds, NewBoard), !,
+                   getSolutions(Height-Width, Diamonds, Squares),
+                   makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
+                   displayGame(Height, Width, Diamonds, FinalBoard).
 
+startExample :- exampleFluid(Height-Width, Diamonds),
+                generateBoard(Height, Width, Board),
+                fillDiamonds(Board, Diamonds, Aux, NewBoard),
+                displayGame(Height, Width, Diamonds, NewBoard), !,
+                getSolutions(Height-Width, Diamonds, Squares),
+                makeAllSquares(Board, Squares, 'a', FinalBoard).
 
 
 getSolutions(GridHeight-GridWidth, Diamonds, Squares) :- 
@@ -51,9 +71,8 @@ getSolutions(GridHeight-GridWidth, Diamonds, Squares) :-
     labeling([], SquaresX),
     labeling([], SquaresY),
 
-    findall([X-Y, Width], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresWidth, Width)), Squares),
-    write(Squares).
-
+    findall([X-Y, Width], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresWidth, Width)), Squares).
+    
 /*SquareX and SquareY are the coords for the square's top left corner*/
 squareFitsDiamond(GridHeight-GridWidth, DiamondX-DiamondY, SquareX, SquareY, SquareWidth) :- 
 
