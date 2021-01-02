@@ -90,6 +90,8 @@ example3(30-21, [0-0, 5-0, 20-0, 5-3, 12-3, 3-8, 7-8, 11-8, 15-8, 19-8, 1-13, 10
 
 exampleSmall(6-6, [0-0, 0-3, 3-0, 3-3]).
 
+exampleFluid(18-3, [0-0, 0-3, 0-6, 0-9, 0-12, 0-15]).
+
 
 /*return max of two as a single element, and not a list*/
 min2([First, Second], First) :- First =< Second.

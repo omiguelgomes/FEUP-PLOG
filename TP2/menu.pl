@@ -49,4 +49,7 @@ parseMode(2) :- statistics(walltime, [Start,_]), !,
                 format('The program took ~4d s to run\n', [Duration]).
 
 parseMode(3) :- startCustomSizeDiamonds.
-parseMode(Val) :- (Val > 3 ; Val < 1), write('Invalid mode\n').
+
+parseMode(4) :- startExample.
+
+parseMode(Val) :- (Val > 4 ; Val < 1), write('Invalid mode\n').

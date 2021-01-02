@@ -36,7 +36,8 @@ startExample :- exampleFluid(Height-Width, Diamonds),
                 fillDiamonds(Board, Diamonds, Aux, NewBoard),
                 displayGame(Height, Width, Diamonds, NewBoard), !,
                 getSolutions(Height-Width, Diamonds, Squares),
-                makeAllSquares(Board, Squares, 'a', FinalBoard).
+                makeAllSquares(Board, Squares, 'a', FinalBoard),
+                displayGame(Height, Width, Diamonds, FinalBoard).
 
 
 getSolutions(GridHeight-GridWidth, Diamonds, Squares) :- 
@@ -72,7 +73,7 @@ getSolutions(GridHeight-GridWidth, Diamonds, Squares) :-
     labeling([], SquaresY),
 
     findall([X-Y, Width], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresWidth, Width)), Squares).
-    
+
 /*SquareX and SquareY are the coords for the square's top left corner*/
 squareFitsDiamond(GridHeight-GridWidth, DiamondX-DiamondY, SquareX, SquareY, SquareWidth) :- 
 
