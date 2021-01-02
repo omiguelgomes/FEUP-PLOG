@@ -37,8 +37,8 @@ fillDiamonds(Board, [X-Y|Rest], NewBoard, FinalBoard):-
 
 makeAllSquares(Board, [], New_True_Char, Board).
 
-makeAllSquares(Board, [(X-Y,L)|Rest], Square_Char, FinalBoard):-
-    makeSquares(Board, (X-Y,L), L, Square_Char, SquareBoard),
+makeAllSquares(Board, [[X-Y,L]|Rest], Square_Char, FinalBoard):-
+    makeSquares(Board, [X-Y,L], L, Square_Char, SquareBoard),
     char_code(Square_Char, Code),
     Code1 is Code+1,
     char_code(New_Char, Code1),
@@ -46,27 +46,42 @@ makeAllSquares(Board, [(X-Y,L)|Rest], Square_Char, FinalBoard):-
 
 makeSquares(Board, _, 0, Square_Char, Board).
 
-makeSquares(Board, (X-Y,L), Aux_L, Square_Char, FinalBoard):-
-    makeRow(Board, (X-Y,L), L, Square_Char, RowBoard),
+makeSquares(Board, [X-Y,L], Aux_L, Square_Char, FinalBoard):-
+    makeRow(Board, [X-Y,L], L, Square_Char, RowBoard),
     Current_L is Aux_L - 1,
     Current_Y is Y + 1,
-    makeSquares(RowBoard, (X-Current_Y, L), Current_L, Square_Char, FinalBoard).
+    makeSquares(RowBoard, [X-Current_Y, L], Current_L, Square_Char, FinalBoard).
 
 makeRow(Board, _, 0, Square_Char, Board).
 
-makeRow(Board, (X-Y,L), Counter, Square_Char, RowBoard):-
+makeRow(Board, [X-Y,L], Counter, Square_Char, RowBoard):-
    /* nl, write('teste3'),
     nl, write('X: '), write(X), nl, write('Y: '), write(Y), nl, write('L: '), write(L), nl, */
-    placeChar(Board, Square_Char, X, Y, NewBoard),
     New_Counter is Counter - 1,
     New_X is X + 1,
-    makeRow(NewBoard, (New_X-Y,L), New_Counter, Square_Char, RowBoard).
+    getCell(X,Y,Board, Value),
+    (
+            Value == '#' -> makeRow(Board, [New_X-Y,L], New_Counter, Square_Char, RowBoard)
+        ;
+            placeChar(Board, Square_Char, X, Y, NewBoard),
+            makeRow(NewBoard, [New_X-Y,L], New_Counter, Square_Char, RowBoard)
+        ).
 
 
     /* Squarelist is of type (X-Y, L)|Rest
         where X-Y is position at top left corner and L is side size*/
 
         
+
+getCell(X, Y, GameState, Value) :- X > -1, Y > -1, X < 10, Y < 10, getRow(Y, GameState, Row), getCellInRow(X, Row, Value).
+
+getRow(0, [H|_], H).
+getRow(Y, [_|T], Row) :- Y1 is Y-1, getRow(Y1, T, Row).
+    
+getCellInRow(0, [H|_], H).
+getCellInRow(X, [_|T], Value) :- X1 is X-1, getCellInRow(X1, T, Value).
+
+
 
 /*known example with solution*/
 example(7-7, [0-0, 3-0, 6-0, 3-2, 4-4, 6-5, 0-6, 4-6, 6-6]).
