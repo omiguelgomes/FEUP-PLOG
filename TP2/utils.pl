@@ -1,6 +1,6 @@
 /*grids generated always have height>=width*/
-generateRandomGrid(Height-Width, Diamonds) :- random(5, 10, Height),
-                                              random(5, Height, Width), 
+generateRandomGrid(Height-Width, Diamonds) :- random(3, 5, Height),
+                                              random(3, Height, Width), 
                                               random(1, 10, DiamondNr),
                                               generateDiamondList(Height, Width, DiamondNr, [], Diamonds), !.
 
@@ -20,6 +20,7 @@ generateBoard(Length, Width, Board) :-
     maplist(=([' ']), Row),         % A row of empty lists, forming an empty row
     length(Board, Length),
     maplist(=(Row), Board).      % A list of empty rows
+
 
 /*Places piece in position X, Y*/
 placeChar([H|T], Char, X, 0, [H2|T]) :- placeChar(H, Char, X, -1, H2).
@@ -83,4 +84,11 @@ getCellInRow(X, [_|T], Value) :- X1 is X-1, getCellInRow(X1, T, Value).
 
 
 /*known example with solution*/
-example(7-7, [0-0, 0-3, 0-6, 2-3, 4-4, 5-6, 6-0, 6-4, 6-6]).
+example(7-7, [0-0, 3-0, 6-0, 3-2, 4-4, 6-5, 0-6, 4-6, 6-6]).
+
+exampleSmall(3-3, [0-0]).
+
+
+max2([First, Second], First) :- First >= Second.
+
+max2([First, Second], Second) :- First < Second.

@@ -41,6 +41,12 @@ getInput(Mode) :- write('What mode would you like to execute?'),
                   read(Mode).
 
 parseMode(1) :- startRandom.
-parseMode(2) :- startCustomSize.
+
+parseMode(2) :- statistics(walltime, [Start,_]), !,
+                startCustomSize, !,
+                statistics(walltime, [End,_]),
+                Duration is End - Start,
+                format('The program took ~4d s to run\n', [Duration]).
+
 parseMode(3) :- startCustomSizeDiamonds.
 parseMode(Val) :- (Val > 3 ; Val < 1), write('Invalid mode\n').
