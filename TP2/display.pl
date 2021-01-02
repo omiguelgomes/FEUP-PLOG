@@ -1,4 +1,4 @@
-displayGame(Height, Width, Diamonds, Board) :- format('I got a ~d x ~d\n', [Height, Width]), write(Diamonds), nl, printBoard(Board, 0), nl,!.
+displayGame(Height, Width, Diamonds, Board) :- printBoard(Board, 0), nl,!.
 
 
 /*prints vertical bar with coordinate indicators. starts by writing a '|', then writes all the numbers separated by*/

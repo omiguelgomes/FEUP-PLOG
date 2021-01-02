@@ -6,12 +6,12 @@ startRandom :- generateRandomGrid(Height-Width, Diamonds),
                makeAllSquares(Board, Squares, 'a', FinalBoard).
 
 
-startCustomSize :- exampleSmall(Height-Width, Diamonds), 
+startCustomSize :- example(Height-Width, Diamonds), 
                    generateBoard(Height, Width, Board),
                    fillDiamonds(Board, Diamonds, Aux, NewBoard),
                    displayGame(Height, Width, Diamonds, NewBoard), !,
                    getSolutions(Height-Width, Diamonds, Squares),
-                   makeAllSquares(Board, Squares, 'a', FinalBoard),
+                   makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
                    displayGame(Height, Width, Diamonds, FinalBoard).
                    
 
@@ -37,25 +37,26 @@ getSolutions(GridHeight-GridWidth, Diamonds, Squares) :-
     min2([GridHeight, GridWidth], MaxLength),
     /*
     variable domains
-    */
-
+    */ 
     domain(SquaresX, 0, MaxSquareX),
     domain(SquaresY, 0, MaxSquareY),
     domain(SquaresWidth, 1, MaxLength),
 
-
+    getRectangles(SquaresX, SquaresY, SquaresWidth, Rectangles),
+    
     GridArea is GridHeight*GridWidth,
-    no_overlap(SquaresX, SquaresY, SquaresWidth),
+    /*no_overlap(SquaresX, SquaresY, SquaresWidth),*/
     sum_areas(SquaresWidth, GridArea),
 
     maplist5(squareFitsDiamond(GridHeight-GridWidth), Diamonds, SquaresX, SquaresY, SquaresWidth),
+
     
+    labeling([], SquaresWidth),
+    disjoint2(Rectangles, []),
     labeling([], SquaresX),
     labeling([], SquaresY),
-    labeling([], SquaresWidth),
 
     findall([X-Y, Width], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresWidth, Width)), Squares).
-
 
 /*SquareX and SquareY are the coords for the square's top left corner*/
 squareFitsDiamond(GridHeight-GridWidth, DiamondX-DiamondY, SquareX, SquareY, SquareWidth) :- 
@@ -80,18 +81,8 @@ sum_areas([SquareWidth|Rest], GridArea, Temp) :- Area #= SquareWidth*SquareWidth
                                                                     sum_areas(Rest, GridArea, NewTemp).
 
 
-/*tudo tem de suceder. nao pode encontrar algo que falhe, o programa tem de procurar algo que consiga acertar*/
- no_overlap(SquaresX, _, _) :- length(SquaresX, 1).
+getRectangles(X, Y, Width, Rectangles) :- getRectangles(X, Y, Width, [], Rectangles).
+getRectangles([], _, _, Rectangles, Rectangles).
 
- no_overlap([SquareX|TailX], [SquareY|TailY], [SquareWidth|TailWidth]) :- no_overlaps_any(SquareX, SquareY, SquareWidth, TailX, TailY, TailWidth), no_overlap(TailX, TailY, TailWidth).
-
- /*true if first argument overlaps any of the squares in the second argument*/
- no_overlaps_any(_, _, _, [], [], []).
- no_overlaps_any(SquareX, SquareY, SquareWidth, [Square2X|RestX], [Square2Y|RestY], [Square2Width|RestWidth]) :- no_overlaps(SquareX, SquareY, SquareWidth, Square2X, Square2Y, Square2Width),
-                                                                                                                 no_overlaps_any(SquareX, SquareY, SquareWidth, RestX, RestY, RestWidth).
-
-
-/*true if first square does not overlap second*/
-no_overlaps(X1, Y1, Length1, X2, Y2, Length2) :- X1+Length1 #=< X2; X2+Length2 #=< X1; Y1+Length1 #=< Y2; Y2+Length2 #=< Y1.
-
-/*no_overlap([0,0,0], [0, 2, 6], [3, 3, 3]).*/
+getRectangles([X|Xtail], [Y|Ytail], [Width|Widthtail], Temp, Rectangles) :- append(Temp, [functor(X, Width, Y, Width)], NewTemp),
+                                                    getRectangles(Xtail, Ytail, Widthtail, NewTemp, Rectangles).

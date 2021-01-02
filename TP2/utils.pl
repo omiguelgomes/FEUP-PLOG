@@ -96,7 +96,7 @@ min2([First, Second], Second) :- First > Second.
 
 
 /*maplist with one more argument*/
-maplist5(Pred, Xs, Ys, Zs, Wz) :-
+maplist5(Pred, Xs, Ys, Zs, Ws) :-
           	(   foreach(X,Xs),
           	    foreach(Y,Ys),
           	    foreach(Z,Zs),
