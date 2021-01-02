@@ -17,24 +17,56 @@ generateDiamondList(Height, Width, DiamondNr, Temp, Diamonds) :- generateDiamond
 
 generateBoard(Length, Width, Board) :-
     length(Row, Width),
-    maplist(=([]), Row),         % A row of empty lists, forming an empty row
+    maplist(=([' ']), Row),         % A row of empty lists, forming an empty row
     length(Board, Length),
     maplist(=(Row), Board).      % A list of empty rows
 
 
 /*Places piece in position X, Y*/
-placeDiamond([H|T], '#', X, 0, [H2|T]) :- placeDiamond(H, '#', X, -1, H2).
-placeDiamond([H|T], '#', X, Y, [H|R]) :- Y > -1, Y1 is Y-1, placeDiamond(T, '#', X, Y1, R). 
+placeChar([H|T], Char, X, 0, [H2|T]) :- placeChar(H, Char, X, -1, H2).
+placeChar([H|T], Char, X, Y, [H|R]) :- Y > -1, Y1 is Y-1, placeChar(T, Char, X, Y1, R). 
 
-placeDiamond([_|T], '#', 0, -1, ['#'|T]).
-placeDiamond([H|T], '#', X, -1, [H|R]) :- X > -1, X1 is X-1, placeDiamond(T, '#', X1, -1, R).  
+placeChar([_|T], Char, 0, -1, [Char|T]).
+placeChar([H|T], Char, X, -1, [H|R]) :- X > -1, X1 is X-1, placeChar(T, Char, X1, -1, R).  
 
 fillDiamonds(Board, [], _, Board).
 
 fillDiamonds(Board, [X-Y|Rest], NewBoard, FinalBoard):-
-    placeDiamond(Board, '#', X, Y, NewBoard),
+    placeChar(Board, '#', X, Y, NewBoard),
     fillDiamonds(NewBoard, Rest, Ultra, FinalBoard).
 
+makeAllSquares(Board, [], New_True_Char, Board).
+
+makeAllSquares(Board, [(X-Y,L)|Rest], Square_Char, FinalBoard):-
+    makeSquares(Board, (X-Y,L), L, Square_Char, SquareBoard),
+    char_code(Square_Char, Code),
+    Code1 is Code+1,
+    char_code(New_Char, Code1),
+    makeAllSquares(SquareBoard, Rest, New_Char, FinalBoard).
+
+makeSquares(Board, _, 0, Square_Char, Board).
+
+makeSquares(Board, (X-Y,L), Aux_L, Square_Char, FinalBoard):-
+    makeRow(Board, (X-Y,L), L, Square_Char, RowBoard),
+    Current_L is Aux_L - 1,
+    Current_Y is Y + 1,
+    makeSquares(RowBoard, (X-Current_Y, L), Current_L, Square_Char, FinalBoard).
+
+makeRow(Board, _, 0, Square_Char, Board).
+
+makeRow(Board, (X-Y,L), Counter, Square_Char, RowBoard):-
+   /* nl, write('teste3'),
+    nl, write('X: '), write(X), nl, write('Y: '), write(Y), nl, write('L: '), write(L), nl, */
+    placeChar(Board, Square_Char, X, Y, NewBoard),
+    New_Counter is Counter - 1,
+    New_X is X + 1,
+    makeRow(NewBoard, (New_X-Y,L), New_Counter, Square_Char, RowBoard).
+
+
+    /* Squarelist is of type (X-Y, L)|Rest
+        where X-Y is position at top left corner and L is side size*/
+
+        
 
 /*known example with solution*/
 example(7-7, [0-0, 3-0, 6-0, 3-2, 4-4, 6-5, 0-6, 4-6, 6-6]).
