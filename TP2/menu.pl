@@ -30,9 +30,9 @@ printMainMenu :-
     write('|                                                                                      |\n'),
 	write('|                            3. Custom size with custom diamonds                       |\n'),
     write('|                                                                                      |\n'),
+    write('|                            4-5. Quick Example                                        |\n'),
+    write('|                                                                                      |\n'),
     write('|                            0. Exit                                                   |\n'),
-    write('|                                                                                      |\n'),
-    write('|                                                                                      |\n'),
     write('|______________________________________________________________________________________|\n'),
     nl,nl.
 
@@ -50,6 +50,8 @@ parseMode(2) :- statistics(walltime, [Start,_]), !,
 
 parseMode(3) :- startCustomSizeDiamonds.
 
-parseMode(4) :- startExample.
+parseMode(4) :- startExample1.
 
-parseMode(Val) :- (Val > 4 ; Val < 1), write('Invalid mode\n').
+parseMode(5) :- startExample2.
+
+parseMode(Val) :- (Val > 5 ; Val < 1), write('Invalid mode\n').

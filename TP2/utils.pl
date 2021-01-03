@@ -15,11 +15,27 @@ generateDiamondList(Height, Width, DiamondNr, Temp, Diamonds) :- Aux1 is Height 
                                                                  
 generateDiamondList(Height, Width, DiamondNr, Temp, Diamonds) :- generateDiamondList(Height, Width, DiamondNr, Temp, Diamonds).
 
-generateBoard(Length, Width, Board) :-
+customDiamondList(_, _, 0, Diamonds, Diamonds).
+customDiamondList(Height, Width, DiamondNr, Temp, Diamonds):-
+    nl, write(DiamondNr),write(' diamond/s remaining'), nl,
+    write('X: '), read(X), X<Width,
+    write('Y: '), read(Y), Y<Height,
+    \+member(X-Y, Temp),
+    append(Temp, [X-Y], NewTemp),
+    DiamondNr1 is DiamondNr - 1,
+    customDiamondList(Height, Width, DiamondNr1, NewTemp, Diamonds).
+
+customDiamondList(Height, Width, DiamondNr, Temp, Diamonds):-
+    nl,write('New Diamond is either out of bounds or already exists in that position, try again.'),nl,
+    customDiamondList(Height, Width, DiamondNr, Temp, Diamonds).
+    
+
+generateBoard(Length, Width, Diamonds, NewBoard) :-
     length(Row, Width),
     maplist(=([' ']), Row),         % A row of empty lists, forming an empty row
     length(Board, Length),
-    maplist(=(Row), Board).      % A list of empty rows
+    maplist(=(Row), Board),      % A list of empty rows
+    fillDiamonds(Board, Diamonds, _, NewBoard).
 
 
 /*Places piece in position X, Y*/
@@ -33,9 +49,9 @@ fillDiamonds(Board, [], _, Board).
 
 fillDiamonds(Board, [X-Y|Rest], NewBoard, FinalBoard):-
     placeChar(Board, '#', X, Y, NewBoard),
-    fillDiamonds(NewBoard, Rest, Ultra, FinalBoard).
+    fillDiamonds(NewBoard, Rest, _, FinalBoard).
 
-makeAllSquares(Board, [], New_True_Char, Board).
+makeAllSquares(Board, [], _, Board).
 makeAllSquares(Board, [[X-Y,L]|Rest], Square_Char, FinalBoard):-
     makeSquares(Board, [X-Y,L], L, Square_Char, SquareBoard),
     char_code(Square_Char, Code),
@@ -43,7 +59,7 @@ makeAllSquares(Board, [[X-Y,L]|Rest], Square_Char, FinalBoard):-
     char_code(New_Char, Code1),
     makeAllSquares(SquareBoard, Rest, New_Char, FinalBoard).
 
-makeSquares(Board, _, 0, Square_Char, Board).
+makeSquares(Board, _, 0, _, Board).
 
 makeSquares(Board, [X-Y,L], Aux_L, Square_Char, FinalBoard):-
     makeRow(Board, [X-Y,L], L, Square_Char, RowBoard),
@@ -51,7 +67,7 @@ makeSquares(Board, [X-Y,L], Aux_L, Square_Char, FinalBoard):-
     Current_Y is Y + 1,
     makeSquares(RowBoard, [X-Current_Y, L], Current_L, Square_Char, FinalBoard).
 
-makeRow(Board, _, 0, Square_Char, Board).
+makeRow(Board, _, 0, _, Board).
 
 makeRow(Board, [X-Y,L], Counter, Square_Char, RowBoard):-
    /* nl, write('teste3'),

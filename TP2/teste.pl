@@ -23,3 +23,11 @@ omegadois:-
     makeAllSquares(NewBoard, [[0-0,3],[0-3,3],[0-6,3],[0-9,3],[0-12,3],[0-15,3]], 'a', FinalBoard),
     printBoard(FinalBoard, 0).
 
+omegatres:-
+    write('Custom Height: '), read(Height), Height < 50,
+    write('Custom Widtht: '), read(Width), Width < 50,
+    write('Custom no. of diamonds: '), read(DiamondNr),
+    customDiamondList(Height, Width, DiamondNr, [], Diamonds),
+    generateBoard(Height, Width, Board),
+    fillDiamonds(Board, Diamonds, _, NewBoard),
+    displayGame(Height, Width, Diamonds, NewBoard).
