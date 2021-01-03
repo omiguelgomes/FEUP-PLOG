@@ -33,13 +33,39 @@ startCustomSizeDiamonds :-
                    makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
                    displayGame(Height, Width, Diamonds, FinalBoard).
 
-startExample :- example2(Height-Width, Diamonds),
+startExample1 :- example1(Height-Width, Diamonds),
                 generateBoard(Height, Width, Board),
                 fillDiamonds(Board, Diamonds, _, NewBoard),
                 displayGame(Height, Width, Diamonds, NewBoard), !,
                 getSolutions(Height-Width, Diamonds, Squares),
                 makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
                 displayGame(Height, Width, Diamonds, FinalBoard).
+
+startExample2 :- example2(Height-Width, Diamonds),
+                generateBoard(Height, Width, Board),
+                fillDiamonds(Board, Diamonds, _, NewBoard),
+                displayGame(Height, Width, Diamonds, NewBoard), !,
+                getSolutions(Height-Width, Diamonds, Squares),
+                makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
+                displayGame(Height, Width, Diamonds, FinalBoard).            
+
+startExample3 :- example3(Height-Width, Diamonds),
+                generateBoard(Height, Width, Board),
+                fillDiamonds(Board, Diamonds, _, NewBoard),
+                displayGame(Height, Width, Diamonds, NewBoard), !,
+                getSolutions(Height-Width, Diamonds, Squares),
+                makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
+                displayGame(Height, Width, Diamonds, FinalBoard).            
+
+startExample4 :- example4(Height-Width, Diamonds),
+                generateBoard(Height, Width, Board),
+                fillDiamonds(Board, Diamonds, _, NewBoard),
+                displayGame(Height, Width, Diamonds, NewBoard), !,
+                getSolutions(Height-Width, Diamonds, Squares),
+                makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
+                displayGame(Height, Width, Diamonds, FinalBoard).            
+
+
 
 
 getSolutions(GridHeight-GridWidth, Diamonds, Squares) :- 

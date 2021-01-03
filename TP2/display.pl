@@ -12,7 +12,6 @@ printVerticalLine(Length) :- write('---'), NewLength is Length-1, printVerticalL
 
             /*PRINT BOARD*/
 printBoard([H|T], RowNr) :- 
-    format('  ~d ', [RowNr]),
     NextRowNr is RowNr + 1,
     printRow(H),
     nl,
