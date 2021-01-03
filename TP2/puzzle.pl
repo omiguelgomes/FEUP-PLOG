@@ -3,7 +3,7 @@ startRandom :- generateRandomGrid(Height-Width, Diamonds),
                fillDiamonds(Board, Diamonds, _, NewBoard),
                displayGame(Height, Width, Diamonds, NewBoard), !,
                getSolutions(Height-Width, Diamonds, Squares),!,
-               makeAllSquares(Board, Squares, 'a', FinalBoard).
+               makeAllSquares(Board, Squares, 'a', _).
 
 
 startCustomSize :- 
@@ -14,7 +14,7 @@ startCustomSize :-
                    generateBoard(Height, Width, Board),
                    fillDiamonds(Board, Diamonds, _, NewBoard),
                    displayGame(Height, Width, Diamonds, NewBoard), !,
-                   getSolutions(Height-Width, Diamonds, Squares), !.
+                   getSolutions(Height-Width, Diamonds, _), !.
                    /*makeAllSquares(NewBoard, Squares, 'a', FinalBoard)*/
                    /*displayGame(Height, Width, Diamonds, FinalBoard).*/
 
