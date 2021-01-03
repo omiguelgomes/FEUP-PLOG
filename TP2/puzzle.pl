@@ -31,11 +31,13 @@ startCustomSizeDiamonds :-
                    makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
                    displayGame(Height, Width, Diamonds, FinalBoard).
 
-startExample :- example7(Height-Width, Diamonds),
+startExample :- example2(Height-Width, Diamonds),
                 generateBoard(Height, Width, Board),
                 fillDiamonds(Board, Diamonds, Aux, NewBoard),
                 displayGame(Height, Width, Diamonds, NewBoard), !,
-                getSolutions(Height-Width, Diamonds, Squares), !.
+                getSolutions(Height-Width, Diamonds, Squares),
+                makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
+                displayGame(Height, Width, Diamonds, FinalBoard).
 
 
 getSolutions(GridHeight-GridWidth, Diamonds, Squares) :- 
@@ -47,8 +49,6 @@ getSolutions(GridHeight-GridWidth, Diamonds, Squares) :-
     /*
         max values for the square's parameters 
     */
-    MaxSquareX is GridWidth-1,
-    MaxSquareY is GridHeight-1,
     min2([GridHeight, GridWidth], MaxLength),
     /*
         variable domains
@@ -71,8 +71,7 @@ getSolutions(GridHeight-GridWidth, Diamonds, Squares) :-
     labeling([bisect], SquaresX),
     labeling([bisect], SquaresY),
 
-    findall([X-Y, Width], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresWidth, Width)), Squares),
-    write(Squares).
+    findall([X-Y, Width], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresWidth, Width)), Squares).
 
 /*SquareX and SquareY are the coords for the square's top left corner*/
 squareFitsDiamond(GridHeight-GridWidth, DiamondX-DiamondY, SquareX, SquareY, SquareWidth) :- 
@@ -104,5 +103,5 @@ getRectangles([X|XTail], [Y|YTail], [Width|WidthTail], Temp, Rectangles) :- appe
                                                     getRectangles(XTail, YTail, WidthTail, NewTemp, Rectangles).
 
 setDomain([], [], []).
-setDomain([X|XTail], [Y|Ytail], [DX-DY|DTail]) :- domain([X], 0, DX), domain([Y], 0, DY),
+setDomain([X|XTail], [Y|YTail], [DX-DY|DTail]) :- domain([X], 0, DX), domain([Y], 0, DY),
                                                     setDomain(XTail, YTail, DTail).
