@@ -1,4 +1,3 @@
-displayGame(_, _, _, Board) :- printBoard(Board, 0), nl,!.
 
 
 /*prints vertical bar with coordinate indicators. starts by writing a '|', then writes all the numbers separated by*/
@@ -11,13 +10,13 @@ printVerticalLine(0) :- nl.
 printVerticalLine(Length) :- write('---'), NewLength is Length-1, printVerticalLine(NewLength).
 
             /*PRINT BOARD*/
-printBoard([H|T], RowNr) :- 
+displayGame([H|T], RowNr) :- 
     NextRowNr is RowNr + 1,
     printRow(H),
     nl,
-    printBoard(T, NextRowNr).
+    displayGame(T, NextRowNr),!.
             
-printBoard([], _).
+displayGame([], _).
             
 /*prints row, cell by cell*/
             
