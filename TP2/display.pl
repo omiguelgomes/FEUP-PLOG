@@ -1,4 +1,4 @@
-displayGame(Height, Width, Diamonds, Board) :- printBoard(Board, 0), nl,!.
+displayGame(_, _, _, Board) :- printBoard(Board, 0), nl,!.
 
 
 /*prints vertical bar with coordinate indicators. starts by writing a '|', then writes all the numbers separated by*/
@@ -24,24 +24,3 @@ printBoard([], _).
             
 printRow([H|T]) :- format('| ~s ', [H]), printRow(T). 
 printRow([]) :- write('|').
-
-
-/*helper func to write cell, will check if x-y is in diamonds, and if a square must be drawn*/
-writeCell(Height, Y, Width, X, Diamonds) :- write(' a ').
-
-/*
-writeCell(Height, Y, Width, X, 0).
-
-writeCell(Height, Y, Width, X, []):-
-    write(' a ').
-
-writeCell(Height, Y, Width, X, [Dab_X-Dab_Y|Rest]) :- 
-    X==Dab_X,
-    Y==Dab_Y,
-    write(' # '),
-    writeCell(Height, Y, Width, X, 0).
-
-writeCell(Height, Y, Width, X, [_|Rest]):-
-    writeCell(Height, Y, Width, X, Rest).
-
-*/

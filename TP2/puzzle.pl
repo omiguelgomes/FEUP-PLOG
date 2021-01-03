@@ -1,31 +1,33 @@
 startRandom :- generateRandomGrid(Height-Width, Diamonds),
                generateBoard(Height, Width, Board),
-               fillDiamonds(Board, Diamonds, Aux, NewBoard),
+               fillDiamonds(Board, Diamonds, _, NewBoard),
                displayGame(Height, Width, Diamonds, NewBoard), !,
                getSolutions(Height-Width, Diamonds, Squares),
-               makeAllSquares(Board, Squares, 'a', FinalBoard).
+               makeAllSquares(Board, Squares, 'a', _).
 
 
 startCustomSize :- 
-                   write('Custom Height: '), read(Height),
-                   write('Custom Widtht: '), read(Width),
+                   write('Custom Height: '), read(Height), Height < 50,
+                   write('Custom Widtht: '), read(Width), Width < 50,
                    random(1, 10, DiamondNr),
                    generateDiamondList(Height, Width, DiamondNr, [], Diamonds),
                    generateBoard(Height, Width, Board),
-                   fillDiamonds(Board, Diamonds, Aux, NewBoard),
+                   fillDiamonds(Board, Diamonds, _, NewBoard),
                    displayGame(Height, Width, Diamonds, NewBoard), !,
-                   getSolutions(Height-Width, Diamonds, Squares).
+                   getSolutions(Height-Width, Diamonds, _).
                    /*makeAllSquares(NewBoard, Squares, 'a', FinalBoard)*/
                    /*displayGame(Height, Width, Diamonds, FinalBoard).*/
+
+startCustomSize :- write('Board too big, choose values below 50. '), nl, startCustomSize.                   
                    
 
 startCustomSizeDiamonds :- 
-                   write('Custom Height: '), read(Height),
-                   write('Custom Widtht: '), read(Width),
+                   write('Custom Height: '), read(Height), Height < 50,
+                   write('Custom Widtht: '), read(Width), Width < 50,
                    write('Custom no. of diamonds: '), read(DiamondNr),
-                   generateDiamondList(Height, Width, DiamondNr, [], Diamonds),
+                   customDiamondList(Height, Width, DiamondNr, [], Diamonds),
                    generateBoard(Height, Width, Board),
-                   fillDiamonds(Board, Diamonds, Aux, NewBoard),
+                   fillDiamonds(Board, Diamonds, _, NewBoard),
                    displayGame(Height, Width, Diamonds, NewBoard), !,
                    getSolutions(Height-Width, Diamonds, Squares),
                    makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
@@ -33,7 +35,7 @@ startCustomSizeDiamonds :-
 
 startExample :- exampleFluid(Height-Width, Diamonds),
                 generateBoard(Height, Width, Board),
-                fillDiamonds(Board, Diamonds, Aux, NewBoard),
+                fillDiamonds(Board, Diamonds, _, NewBoard),
                 displayGame(Height, Width, Diamonds, NewBoard), !,
                 getSolutions(Height-Width, Diamonds, Squares),
                 makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
