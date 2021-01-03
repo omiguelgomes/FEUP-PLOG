@@ -31,7 +31,7 @@ startCustomSizeDiamonds :-
                    makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
                    displayGame(Height, Width, Diamonds, FinalBoard).
 
-startExample :- example2(Height-Width, Diamonds),
+startExample :- example7(Height-Width, Diamonds),
                 generateBoard(Height, Width, Board),
                 fillDiamonds(Board, Diamonds, Aux, NewBoard),
                 displayGame(Height, Width, Diamonds, NewBoard), !,
@@ -39,7 +39,7 @@ startExample :- example2(Height-Width, Diamonds),
                 makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
                 displayGame(Height, Width, Diamonds, FinalBoard).
 
-
+/*IMPLEMENTAR TEMPO PARA TODOS, E TIMEOUT*/
 getSolutions(GridHeight-GridWidth, Diamonds, Squares) :- 
     /*generate lists for the solutions*/
     length(Diamonds, NrSquares),
