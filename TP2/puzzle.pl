@@ -2,8 +2,8 @@ startRandom :- generateRandomGrid(Height-Width, Diamonds),
                generateBoard(Height, Width, Board),
                fillDiamonds(Board, Diamonds, _, NewBoard),
                displayGame(Height, Width, Diamonds, NewBoard), !,
-               getSolutions(Height-Width, Diamonds, Squares),
-               makeAllSquares(Board, Squares, 'a', _).
+               getSolutions(Height-Width, Diamonds, Squares),!,
+               makeAllSquares(Board, Squares, 'a', FinalBoard).
 
 
 startCustomSize :- 
@@ -14,7 +14,7 @@ startCustomSize :-
                    generateBoard(Height, Width, Board),
                    fillDiamonds(Board, Diamonds, _, NewBoard),
                    displayGame(Height, Width, Diamonds, NewBoard), !,
-                   getSolutions(Height-Width, Diamonds, _).
+                   getSolutions(Height-Width, Diamonds, Squares), !.
                    /*makeAllSquares(NewBoard, Squares, 'a', FinalBoard)*/
                    /*displayGame(Height, Width, Diamonds, FinalBoard).*/
 
@@ -29,11 +29,11 @@ startCustomSizeDiamonds :-
                    generateBoard(Height, Width, Board),
                    fillDiamonds(Board, Diamonds, _, NewBoard),
                    displayGame(Height, Width, Diamonds, NewBoard), !,
-                   getSolutions(Height-Width, Diamonds, Squares),
+                   getSolutions(Height-Width, Diamonds, Squares), !,
                    makeAllSquares(NewBoard, Squares, 'a', FinalBoard),
                    displayGame(Height, Width, Diamonds, FinalBoard).
 
-startExample :- exampleFluid(Height-Width, Diamonds),
+startExample :- example2(Height-Width, Diamonds),
                 generateBoard(Height, Width, Board),
                 fillDiamonds(Board, Diamonds, _, NewBoard),
                 displayGame(Height, Width, Diamonds, NewBoard), !,
@@ -51,15 +51,12 @@ getSolutions(GridHeight-GridWidth, Diamonds, Squares) :-
     /*
         max values for the square's parameters 
     */
-    MaxSquareX is GridWidth-1,
-    MaxSquareY is GridHeight-1,
     min2([GridHeight, GridWidth], MaxLength),
     /*
         variable domains
     */ 
-    domain(SquaresX, 0, MaxSquareX),
-    domain(SquaresY, 0, MaxSquareY),
     domain(SquaresWidth, 1, MaxLength),
+    setDomain(SquaresX, SquaresY, Diamonds),
 
     /*
         variable constraints
@@ -70,9 +67,11 @@ getSolutions(GridHeight-GridWidth, Diamonds, Squares) :-
     maplist5(squareFitsDiamond(GridHeight-GridWidth), Diamonds, SquaresX, SquaresY, SquaresWidth),
     disjoint2(Rectangles, []),
     
-    labeling([down], SquaresWidth),
-    labeling([], SquaresX),
-    labeling([], SquaresY),
+    /*down searches from the max value to the bottom*/
+    /*bisect makes binary choice between > median or < median. in contrast, the default (step) starts with the largest or smallest possibility, which usuallt dont work here*/
+    labeling([down, bisect], SquaresWidth),
+    labeling([bisect], SquaresX),
+    labeling([bisect], SquaresY),
 
     findall([X-Y, Width], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresWidth, Width)), Squares).
 
@@ -102,5 +101,9 @@ sum_areas([SquareWidth|Rest], GridArea, Temp) :- Area #= SquareWidth*SquareWidth
 getRectangles(X, Y, Width, Rectangles) :- getRectangles(X, Y, Width, [], Rectangles).
 getRectangles([], _, _, Rectangles, Rectangles).
 
-getRectangles([X|Xtail], [Y|Ytail], [Width|Widthtail], Temp, Rectangles) :- append(Temp, [functor(X, Width, Y, Width)], NewTemp),
-                                                    getRectangles(Xtail, Ytail, Widthtail, NewTemp, Rectangles).
+getRectangles([X|XTail], [Y|YTail], [Width|WidthTail], Temp, Rectangles) :- append(Temp, [functor(X, Width, Y, Width)], NewTemp),
+                                                    getRectangles(XTail, YTail, WidthTail, NewTemp, Rectangles).
+
+setDomain([], [], []).
+setDomain([X|XTail], [Y|YTail], [DX-DY|DTail]) :- domain([X], 0, DX), domain([Y], 0, DY),
+                                                    setDomain(XTail, YTail, DTail).
