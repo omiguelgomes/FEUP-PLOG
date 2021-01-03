@@ -30,11 +30,12 @@ customDiamondList(Height, Width, DiamondNr, Temp, Diamonds):-
     customDiamondList(Height, Width, DiamondNr, Temp, Diamonds).
     
 
-generateBoard(Length, Width, Board) :-
+generateBoard(Length, Width, Diamonds, NewBoard) :-
     length(Row, Width),
     maplist(=([' ']), Row),         % A row of empty lists, forming an empty row
     length(Board, Length),
-    maplist(=(Row), Board).      % A list of empty rows
+    maplist(=(Row), Board),      % A list of empty rows
+    fillDiamonds(Board, Diamonds, _, NewBoard).
 
 
 /*Places piece in position X, Y*/
