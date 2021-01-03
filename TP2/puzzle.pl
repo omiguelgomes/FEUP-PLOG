@@ -1,20 +1,22 @@
 startRandom :- generateRandomGrid(Height-Width, Diamonds),
                generateBoard(Height, Width, Diamonds, Board),
                displayGame(Board, 0), !,
-               getSolutions(Height-Width, Diamonds, Squares),!,
-               makeAllSquares(Board, Squares, 'a', _).
+               if(getSolutions(Height-Width, Diamonds, Squares), 
+                (makeAllSquares(Board, Squares, 'a', NewBoard), 
+                displayGame(NewBoard, 0)), 
+                write('The board generated does not have solutions\n')).
+              
 
 
-startCustomSize :- 
-                   write('Custom Height: '), read(Height), Height < 50,
+startCustomSize :- write('Custom Height: '), read(Height), Height < 50,
                    write('Custom Widtht: '), read(Width), Width < 50,
-                   random(1, 10, DiamondNr),
+                   random(1, Height, DiamondNr),
                    generateDiamondList(Height, Width, DiamondNr, [], Diamonds),
                    generateBoard(Height, Width, Diamonds, Board),
                    displayGame(Board, 0), !,
-                   getSolutions(Height-Width, Diamonds, _), !.
-                   /*makeAllSquares(NewBoard, Squares, 'a', FinalBoard)*/
-                   /*displayGame(Height, Width, Diamonds, FinalBoard).*/
+                   getSolutions(Height-Width, Diamonds, Squares), !,
+                   makeAllSquares(Board, Squares, 'a', FinalBoard),
+                   displayGame(FinalBoard, 0).
 
 startCustomSize :- write('Board too big, choose values below 50. '), nl, startCustomSize.                   
                    
@@ -30,33 +32,24 @@ startCustomSizeDiamonds :-
                    makeAllSquares(Board, Squares, 'a', FinalBoard),
                    displayGame(FinalBoard, 0).
 
+
 startExample1 :- example1(Height-Width, Diamonds),
-                generateBoard(Height, Width, Diamonds, Board),
-                displayGame(Board, 0), !,
-                getSolutions(Height-Width, Diamonds, Squares),
-                makeAllSquares(Board, Squares, 'a', FinalBoard), nl, nl,
-                displayGame(FinalBoard, 0).
+                 startExample(Height-Width, Diamonds).
 
 startExample2 :- example2(Height-Width, Diamonds),
-                generateBoard(Height, Width, Diamonds, Board),
-                displayGame(Board, 0), !,
-                getSolutions(Height-Width, Diamonds, Squares),
-                makeAllSquares(Board, Squares, 'a', FinalBoard), nl, nl,
-                displayGame(FinalBoard, 0).         
+                 startExample(Height-Width, Diamonds).
 
 startExample3 :- example3(Height-Width, Diamonds),
-                generateBoard(Height, Width, Diamonds, Board),
-                displayGame(Board, 0), !,
-                getSolutions(Height-Width, Diamonds, Squares),
-                makeAllSquares(Board, Squares, 'a', FinalBoard), nl, nl,
-                displayGame(FinalBoard, 0).            
+                 startExample(Height-Width, Diamonds).
 
 startExample4 :- example4(Height-Width, Diamonds),
-                generateBoard(Height, Width, Diamonds, Board),
-                displayGame(Board, 0), !,
-                getSolutions(Height-Width, Diamonds, Squares),
-                makeAllSquares(Board, Squares, 'a', FinalBoard), nl, nl,
-                displayGame(FinalBoard, 0).            
+                 startExample(Height-Width, Diamonds).
+
+startExample(Height-Width, Diamonds) :-  generateBoard(Height, Width, Diamonds, Board),
+                                         displayGame(Board, 0), !,
+                                         getSolutions(Height-Width, Diamonds, Squares),
+                                         makeAllSquares(Board, Squares, 'a', FinalBoard), nl, nl,
+                                         displayGame(FinalBoard, 0).  
 
 
 

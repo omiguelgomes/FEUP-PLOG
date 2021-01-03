@@ -26,11 +26,11 @@ printMainMenu :-
     write('|                                                                                      |\n'),
     write('|                            1. Random grid                                            |\n'),
     write('|                                                                                      |\n'),
-    write('|                            2. Custom size                                            |\n'),
+    write('|                            2. Custom size with random diamonds                       |\n'),
     write('|                                                                                      |\n'),
 	write('|                            3. Custom size with custom diamonds                       |\n'),
     write('|                                                                                      |\n'),
-    write('|                            4-5. Quick Example                                        |\n'),
+    write('|                            4-7. Quick Example                                        |\n'),
     write('|                                                                                      |\n'),
     write('|                            0. Exit                                                   |\n'),
     write('|______________________________________________________________________________________|\n'),
@@ -40,7 +40,12 @@ printMainMenu :-
 getInput(Mode) :- write('What mode would you like to execute?'),
                   read(Mode).
 
-parseMode(1) :- startRandom.
+parseMode(1) :- statistics(walltime, [Start,_]), !,
+                startRandom, !,
+                statistics(walltime, [End,_]),
+                Duration is End - Start,
+                format('The program took ~4d s to run\n', [Duration]).
+
 
 parseMode(2) :- statistics(walltime, [Start,_]), !,
                 startCustomSize, !,
@@ -48,10 +53,23 @@ parseMode(2) :- statistics(walltime, [Start,_]), !,
                 Duration is End - Start,
                 format('The program took ~4d s to run\n', [Duration]).
 
+parseMode(Val) :- (Val > 7 ; Val < 1), write('Invalid mode\n').
+
+
 parseMode(3) :- startCustomSizeDiamonds.
 
-parseMode(4) :- startExample1.
+parseMode(Nr) :- Nr > 3, statistics(walltime, [Start,_]), !,
+                         startExample(Nr), !,
+                         statistics(walltime, [End,_]),
+                         Duration is End - Start,
+                         format('The program took ~4d s to run\n', [Duration]).
 
-parseMode(5) :- startExample2.
+startExample(4) :- startExample1.
 
-parseMode(Val) :- (Val > 5 ; Val < 1), write('Invalid mode\n').
+startExample(5) :- startExample2.
+
+startExample(6) :- startExample3.
+
+startExample(7) :- startExample4.
+
+startExample(Val) :- (Val > 7 ; Val < 1), write('Invalid mode\n').

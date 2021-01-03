@@ -1,5 +1,3 @@
-
-
 /*prints vertical bar with coordinate indicators. starts by writing a '|', then writes all the numbers separated by*/
 printCoordsBar(X, X) :- write('|\n').
 printCoordsBar(_, 0) :- write('|'), fail.
@@ -9,14 +7,14 @@ printCoordsBar(Width, Nr) :- format(' ~d ', [Nr]), NewNr is Nr+1, printCoordsBar
 printVerticalLine(0) :- nl.
 printVerticalLine(Length) :- write('---'), NewLength is Length-1, printVerticalLine(NewLength).
 
-            /*PRINT BOARD*/
+/*PRINT BOARD*/
 displayGame([H|T], RowNr) :- 
     NextRowNr is RowNr + 1,
     printRow(H),
     nl,
     displayGame(T, NextRowNr),!.
             
-displayGame([], _).
+displayGame([], _) :- nl.
             
 /*prints row, cell by cell*/
             
