@@ -42,7 +42,7 @@ startExample2 :- example2(Height-Width, Diamonds),
 startExample3 :- example3(Height-Width, Diamonds),
                  startExample(Height-Width, Diamonds).
 
-startExample4 :- example4(Height-Width, Diamonds),
+startExample4 :- exampleJulio(Height-Width, Diamonds),
                  startExample(Height-Width, Diamonds).
 
 startExample(Height-Width, Diamonds) :-  generateBoard(Height, Width, Diamonds, Board),
@@ -74,13 +74,12 @@ getSolutions(GridHeight-GridWidth, Diamonds, Squares) :-
         variable constraints
     */
     getRectangles(SquaresX, SquaresY, SquaresWidth, Rectangles),
+    maplist5(squareFitsDiamond(GridHeight-GridWidth, Diamonds), Diamonds, SquaresX, SquaresY, SquaresWidth),
     GridArea is GridHeight*GridWidth,
     sum_areas(SquaresWidth, GridArea),
-    maplist5(squareFitsDiamond(GridHeight-GridWidth), Diamonds, SquaresX, SquaresY, SquaresWidth),
     disjoint2(Rectangles, []),
     
-    /*down searches from the max value to the bottom*/
-    /*bisect makes binary choice between > median or < median. in contrast, the default (step) starts with the largest or smallest possibility, which usuallt dont work here*/
+    
     labeling([down, bisect], SquaresWidth),
     labeling([bisect], SquaresX),
     labeling([bisect], SquaresY),
@@ -88,7 +87,7 @@ getSolutions(GridHeight-GridWidth, Diamonds, Squares) :-
     findall([X-Y, Width], (nth0(Index, SquaresX, X), nth0(Index, SquaresY, Y), nth0(Index, SquaresWidth, Width)), Squares).
 
 /*SquareX and SquareY are the coords for the square's top left corner*/
-squareFitsDiamond(GridHeight-GridWidth, DiamondX-DiamondY, SquareX, SquareY, SquareWidth) :- 
+squareFitsDiamond(GridHeight-GridWidth, Diamonds, DiamondX-DiamondY, SquareX, SquareY, SquareWidth) :- 
 
     /*square is inside the grid limits*/
     SquareX + SquareWidth #=< GridWidth,

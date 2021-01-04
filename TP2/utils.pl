@@ -121,6 +121,8 @@ example7(31-31, [0-0, 11-0, 19-0, 30-0, 9-7, 30-11, 0-15, 18-17, 23-18, 30-19, 1
 
 exampleSmall(6-6, [0-0, 0-3, 3-0, 3-3]).
 
+exampleJulio(15-15, [0-9, 2-2, 7-2, 12-2, 5-9, 10-9, 13-9, 14-9, 10-8, 11-8, 13-8, 11-6, 13-6, 2-12, 7-12, 12-12]).
+
 
 /*return min of two as a single element, and not a list*/
 min2([First, Second], First) :- First =< Second.
